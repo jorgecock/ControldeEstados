@@ -9,6 +9,13 @@
 
 	include "scripts.php";
 	
+	if (!empty($_GET)){
+		if (isset($_GET['mod'])){
+			//echo $_GET['mod'];
+			$_SESSION['mod']=$_GET['mod'];
+		}
+	}
+	
 	if (!isset($_SESSION['mod'])){
 		$mod=1;	
 		$_SESSION['mod']=1;
@@ -68,7 +75,7 @@
 	<br><br>
 	
 	Numero de modulo a seguir.<br>
-	<select id="mySelect" onchange="myFunction()">
+	<select id="mySelect" onchange="cambiodemodulo(this.value)">
 		<?php
 		//obtener numero de modulos configurados a hacer seguimiento para select 
 		include "conexion.php";
@@ -78,10 +85,17 @@
 		echo $result1;
 		for($i=1;$i<=$result1;$i++){
 		?>	
-		<option value="<?php echo $i; ?>"><?php echo $i;?></option>
+		<option value="<?php echo $i; ?>" <?php echo ($i==$mod)? "selected":"";?>><?php echo $i;?></option>
 		<?php 
 		}
 		?>
 	</select>
+
+	<script>
+		function cambiodemodulo(val) {
+  		url="error.php?mod="+val;
+  		location.replace(url);
+		}
+	</script>
 </body>
 </html>

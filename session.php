@@ -2,7 +2,7 @@
 
 session_start();
 
-unset($_SESSION['mod'])
+$_SESSION['mod']=1;
 
 
 ?>
