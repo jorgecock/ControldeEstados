@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-09-2020 a las 04:05:08
--- Versión del servidor: 10.4.11-MariaDB
--- Versión de PHP: 7.4.5
+-- Tiempo de generación: 01-09-2020 a las 09:01:31
+-- Versión del servidor: 10.4.13-MariaDB
+-- Versión de PHP: 7.4.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,21 +29,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `controldeestados` (
   `idmodulo` int(11) NOT NULL,
-  `idestado` int(11) NOT NULL DEFAULT 1,
-  `ea` int(11) NOT NULL DEFAULT 1,
-  `ce` int(11) NOT NULL DEFAULT 0
+  `idestado` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `controldeestados`
 --
 
-INSERT INTO `controldeestados` (`idmodulo`, `idestado`, `ea`, `ce`) VALUES
-(1, 6, 1, 0),
-(2, 1, 1, 0),
-(3, 1, 1, 0),
-(4, 1, 1, 0),
-(5, 1, 1, 0);
+INSERT INTO `controldeestados` (`idmodulo`, `idestado`) VALUES
+(1, 2),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6);
 
 -- --------------------------------------------------------
 
@@ -93,7 +92,7 @@ ALTER TABLE `estados`
 -- AUTO_INCREMENT de la tabla `controldeestados`
 --
 ALTER TABLE `controldeestados`
-  MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `estados`

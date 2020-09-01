@@ -8,58 +8,7 @@
 	$estadopagina=1; //entrandoorden
 
 	include "scripts.php";
-	
-	if (!empty($_GET)){
-		if (isset($_GET['mod'])){
-			//echo $_GET['mod'];
-			$_SESSION['mod']=$_GET['mod'];
-		}
-	}
-
-	if (!isset($_SESSION['mod'])){
-		$mod=1;	
-		$_SESSION['mod']=1;
-	} else {
-		$mod=$_SESSION['mod'];
-	}
-	include "conexion.php";
-	$query = mysqli_query($conexion,"SELECT * FROM controldeestados WHERE idmodulo=$mod");
-	mysqli_close($conexion);
-	$result = mysqli_num_rows($query);
-	if($result>0){
-		$data=mysqli_fetch_array($query);
-		$estado=$data['idestado'];
-		$ea=$data['ea'];
-		$ce=$data['ce'];
-		if ($estado<>$estadopagina){
-			if ($estado==1){
-				header("location: index.php");
-			} elseif ($estado==2){
-				header("location: validacion.php");
-			} elseif ($estado==3){
-				header("location: conteo.php");
-			} elseif ($estado==4){
-				header("location: pausa.php");
-			} elseif ($estado==5){
-				header("location: error.php");
-			} elseif ($estado==6){
-				header("location: reportefinal.php");
-			} 
-		}
-
-		//Inicializaciones
-		if ($ce=1){
-			$ce=0;
-			include "conexion.php";
-			$query1 = mysqli_query($conexion,"UPDATE controldeestados SET ce=0 WHERE idmodulo=$mod");
-			mysqli_close($conexion);
-			
-			//Inicializaciones
-			//Inicializaciones
-		}
-	} else {
-		echo "numero de modulo invalido";
-	}
+	include "functions.php";
 ?>
 
 
@@ -68,10 +17,31 @@
 <head>
 	<title>Estado 1 Ingreso de Datos de orden de producción</title>
 </head>
-<body>
-	Ingreso de Datos de orden de producción <br><br>
-	<a href="validacion.php?ce=1">Validar</a>
-	<br><br>
+<body align='center'>
+	
+<div>
+	<h1>Datos de orden de producción para el día en el módulo controlado por IoT</h1>
+	<hr size="8px" color="black" />
+
+	<h2>Inserte los datos de la orden de producción a programar en el módulo <?php echo $mod; ?>.</h2>
+	<br>
+	<form method="post" action="index.php?ce=2">
+		<label for="unidadesesperadas">Unidades requeridas en la jornada a programar:  </label>
+		<input type="number" name="unidadesesperadas">
+		<br>
+		<br>
+		<label for="tiempocicloesperado">Tiempo de ciclo en minutos: (Tiempo de ritmo esperado entre prendas entregadas en el punto final)  </label>
+		<input type="number" name="tiempocicloesperado">
+		<br>
+		<br>
+		<label for="minutosprogramados">Minutos de jornada programados para producir la referencia:  </label>
+		<input type="number" name="minutosprogramados">
+		<br>
+		<br>
+		<input type="submit" value="Programar Producción">
+	</form>
+
+  <hr size="8px" color="black" />
 	
 	Número de módulo a seguir.<br>
 	<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">
@@ -96,5 +66,6 @@
   		location.replace(url);
 		}
 	</script>
+	</div>
 </body>
 </html>
