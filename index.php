@@ -5,44 +5,53 @@
 	//}
 	//ce es cambio de estado
 	//ea es estado anterior
+	$estadopagina=1; //entrandoorden
+
 	include "scripts.php";
-	if (!isset($_GET['mod'])){
-		$mod=1;		
-	} else {
-		$mod=$_GET['mod'];
-	}
-
-	if (isset($_GET['ce']) AND $_GET['ce']=1){
-		include "conexion.php";
-		$query = mysqli_query($conexion,"UPDATE controldeestados SET estado='entrandoorden' WHERE idmodulo=$mod");
-		mysqli_close($conexion);
-	}
-
-  //determinar el estado del modulo en variable mod
-	include "conexion.php";
-	$query = mysqli_query($conexion,"SELECT estado FROM controldeestados WHERE idmodulo=$mod");
-	mysqli_close($conexion);
 	
+	if (!isset($_SESSION['mod'])){
+		$mod=1;	
+		$_SESSION['mod']=1;
+	} else {
+		$mod=$_SESSION['mod'];
+	}
+	include "conexion.php";
+	$query = mysqli_query($conexion,"SELECT * FROM controldeestados WHERE idmodulo=$mod");
+	mysqli_close($conexion);
 	$result = mysqli_num_rows($query);
 	if($result>0){
-		$resultado=mysqli_fetch_array($query);
-		$estado=$resultado[0];
-		
-		if ($estado=="entrandoorden"){
-			echo ("Estado 0 Modulo:".$mod);
-		} elseif ($estado=="validando"){
-			header("location: validacion.php?mod=".$mod);
-		} elseif ($estado=="contando"){
-			header("location: conteo.php?mod=".$mod);
-		} elseif ($estado=="enpausa"){
-			header("location: pausa.php?mod=".$mod);
-		} elseif ($estado=="error"){
-			header("location: error.php?mod=".$mod);
-		} elseif ($estado=="terminado"){
-			header("location: reportefinal.php?mod=".$mod);
-		} 
-	}	else {
-		echo ("Numero de módulo invalido");
+		$data=mysqli_fetch_array($query);
+		$estado=$data['idestado'];
+		$ea=$data['ea'];
+		$ce=$data['ce'];
+		if ($estado<>$estadopagina){
+			if ($estado==1){
+				header("location: index.php");
+			} elseif ($estado==2){
+				header("location: validacion.php");
+			} elseif ($estado==3){
+				header("location: conteo.php");
+			} elseif ($estado==4){
+				header("location: pausa.php");
+			} elseif ($estado==5){
+				header("location: error.php");
+			} elseif ($estado==6){
+				header("location: reportefinal.php");
+			} 
+		}
+
+		//Inicializaciones
+		if ($ce=1){
+			$ce=0;
+			include "conexion.php";
+			$query1 = mysqli_query($conexion,"UPDATE controldeestados SET ce=0 WHERE idmodulo=$mod");
+			mysqli_close($conexion);
+			
+			//Inicializaciones
+			//Inicializaciones
+		}
+	} else {
+		echo "numero de modulo invalido";
 	}
 ?>
 
@@ -50,20 +59,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Estado 0 Ingreso de Datos de orden de producción</title>
+	<title>Estado 1 Ingreso de Datos de orden de producción</title>
 </head>
 <body>
-	<br>
-	Ingreso de Datos de orden de producción <br>
-	<a href="validacion.php?mod=<?php echo $mod;echo("&ce=1");?>">Validar</a>
-
+	Ingreso de Datos de orden de producción <br><br>
+	<a href="validacion.php?ce=1">Validar</a>
+	<br><br>
+	
+	Número de módulo a seguir.<br>
 	<select id="mySelect" onchange="myFunction()">
-  	<option value="1">1</option>
-  	<option value="2">2</option>
+		<?php
+		//obtener numero de modulos configurados a hacer seguimiento para select 
+		include "conexion.php";
+		$query1 = mysqli_query($conexion,"SELECT * FROM controldeestados");
+		mysqli_close($conexion);
+		$result1=mysqli_num_rows($query1);
+		echo $result1;
+		for($i=1;$i<=$result1;$i++){
+		?>	
+		<option value="<?php echo $i; ?>"><?php echo $i;?></option>
+		<?php 
+		}
+		?>
 	</select>
-
-
-
-
 </body>
 </html>
