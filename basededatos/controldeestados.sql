@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-09-2020 a las 09:01:31
--- Versión del servidor: 10.4.13-MariaDB
--- Versión de PHP: 7.4.8
+-- Tiempo de generación: 03-09-2020 a las 01:49:23
+-- Versión del servidor: 10.4.11-MariaDB
+-- Versión de PHP: 7.4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,20 +29,23 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `controldeestados` (
   `idmodulo` int(11) NOT NULL,
-  `idestado` int(11) NOT NULL DEFAULT 1
+  `idestado` int(11) NOT NULL DEFAULT 1,
+  `unidadesesperadas` int(11) NOT NULL,
+  `tiempocicloesperado` int(11) NOT NULL,
+  `minutosprogramados` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `controldeestados`
 --
 
-INSERT INTO `controldeestados` (`idmodulo`, `idestado`) VALUES
-(1, 2),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6);
+INSERT INTO `controldeestados` (`idmodulo`, `idestado`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`) VALUES
+(1, 3, 220, 2, 440),
+(2, 1, 0, 0, 0),
+(3, 1, 0, 0, 0),
+(4, 1, 0, 0, 0),
+(5, 1, 0, 0, 0),
+(6, 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
