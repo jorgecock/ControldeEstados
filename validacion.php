@@ -17,11 +17,12 @@
 		if (isset($_POST['IniCont'])){
 				
 			$siguienteestado=3; //estado validacion
-			
+			$productoshechos=0; //inicio del conteo 
+			$horadeinicio=date("H:m:s");
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
-				UPDATE controldeestados 
-				SET idestado=$siguienteestado
+				UPDATE controldeestados
+				SET idestado=$siguienteestado, productoshechos=$productoshechos, horadeinicio='$horadeinicio'
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: conteo.php");

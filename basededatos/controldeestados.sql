@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-09-2020 a las 01:49:23
+-- Tiempo de generación: 03-09-2020 a las 02:09:59
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -32,20 +32,22 @@ CREATE TABLE `controldeestados` (
   `idestado` int(11) NOT NULL DEFAULT 1,
   `unidadesesperadas` int(11) NOT NULL,
   `tiempocicloesperado` int(11) NOT NULL,
-  `minutosprogramados` int(11) NOT NULL
+  `minutosprogramados` int(11) NOT NULL,
+  `productoshechos` int(11) NOT NULL DEFAULT 0,
+  `horadeinicio` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `controldeestados`
 --
 
-INSERT INTO `controldeestados` (`idmodulo`, `idestado`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`) VALUES
-(1, 3, 220, 2, 440),
-(2, 1, 0, 0, 0),
-(3, 1, 0, 0, 0),
-(4, 1, 0, 0, 0),
-(5, 1, 0, 0, 0),
-(6, 1, 0, 0, 0);
+INSERT INTO `controldeestados` (`idmodulo`, `idestado`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `horadeinicio`) VALUES
+(1, 2, 100, 2, 200, 0, '19:09:16'),
+(2, 1, 0, 0, 0, 0, '00:00:00'),
+(3, 1, 0, 0, 0, 0, '00:00:00'),
+(4, 1, 0, 0, 0, 0, '00:00:00'),
+(5, 1, 0, 0, 0, 0, '00:00:00'),
+(6, 1, 0, 0, 0, 0, '00:00:00');
 
 -- --------------------------------------------------------
 
