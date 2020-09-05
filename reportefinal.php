@@ -21,8 +21,8 @@
 
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
-				UPDATE controldeestados 
-				SET idestado=$siguienteestado 
+				UPDATE modulos 
+				SET estado=$siguienteestado 
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: index.php");
@@ -63,7 +63,7 @@
 			<?php
 			//obtener numero de modulos configurados a hacer seguimiento para select 
 			include "conexion.php";
-			$query1 = mysqli_query($conexion,"SELECT * FROM controldeestados");
+			$query1 = mysqli_query($conexion,"SELECT * FROM modulos");
 			mysqli_close($conexion);
 			$result1=mysqli_num_rows($query1);
 			echo $result1;

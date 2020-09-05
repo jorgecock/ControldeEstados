@@ -21,8 +21,8 @@
 			$horadeinicio=date("H:m:s");
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
-				UPDATE controldeestados
-				SET idestado=$siguienteestado, productoshechos=$productoshechos, horadeinicio='$horadeinicio'
+				UPDATE modulos
+				SET estado=$siguienteestado, productoshechos=$productoshechos, horadeinicio='$horadeinicio'
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: conteo.php");
@@ -34,8 +34,8 @@
 			
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
-				UPDATE controldeestados 
-				SET idestado=$siguienteestado
+				UPDATE modulos 
+				SET estado=$siguienteestado
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: index.php");
@@ -48,7 +48,7 @@
 	include "conexion.php";
 	$query1 = mysqli_query($conexion,"
 				SELECT unidadesesperadas, tiempocicloesperado , minutosprogramados
-				FROM controldeestados
+				FROM modulos
 				WHERE idmodulo=$mod");
 	mysqli_close($conexion);
 	$data=mysqli_fetch_array($query1);
@@ -92,7 +92,7 @@
 			<?php
 			//obtener numero de modulos configurados a hacer seguimiento para select 
 			include "conexion.php";
-			$query1 = mysqli_query($conexion,"SELECT * FROM controldeestados");
+			$query1 = mysqli_query($conexion,"SELECT * FROM modulos");
 			mysqli_close($conexion);
 			$result1=mysqli_num_rows($query1);
 			echo $result1;

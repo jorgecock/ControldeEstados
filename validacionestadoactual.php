@@ -1,12 +1,12 @@
 <?php
 	//validacion de estado actual vs pagina cargada
 	include "conexion.php";
-	$query = mysqli_query($conexion,"SELECT * FROM controldeestados WHERE idmodulo=$mod");
+	$query = mysqli_query($conexion,"SELECT * FROM modulos WHERE idmodulo=$mod");
 	mysqli_close($conexion);
 	$result = mysqli_num_rows($query);
 	if($result>0){
 		$data=mysqli_fetch_array($query);
-		$estado=$data['idestado'];
+		$estado=$data['estado'];
 		if ($estado<>$estadopagina){
 			if ($estado==1){
 				header("location: index.php");
