@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-09-2020 a las 02:32:45
--- Versión del servidor: 10.4.11-MariaDB
--- Versión de PHP: 7.4.5
+-- Tiempo de generación: 05-09-2020 a las 23:13:11
+-- Versión del servidor: 10.4.13-MariaDB
+-- Versión de PHP: 7.4.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -95,9 +95,9 @@ CREATE TABLE `modulos` (
 --
 
 INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `horadeinicio`, `created_at`, `uptdated_at`, `deleted_at`, `status`) VALUES
-(1, '', '', 2, 1, 1, 1, 0, '15:09:12', '2020-09-04 17:55:23', NULL, NULL, 1),
+(1, '', '', 1, 10, 1, 10, 4, '16:09:44', '2020-09-04 17:55:23', NULL, NULL, 1),
 (2, '', '', 2, 100, 1, 100, 0, '00:00:00', '2020-09-04 17:55:23', NULL, NULL, 1),
-(3, '', '', 3, 210, 2, 420, 0, '19:09:31', '2020-09-04 17:55:23', NULL, NULL, 1),
+(3, '', '', 6, 210, 2, 420, 0, '19:09:31', '2020-09-04 17:55:23', NULL, NULL, 1),
 (4, '', '', 4, 2, 1, 2, 0, '19:09:44', '2020-09-04 17:55:23', NULL, NULL, 1),
 (5, '', '', 6, 1, 10, 10, 0, '19:09:10', '2020-09-04 17:55:23', NULL, NULL, 1),
 (6, '', '', 3, 2, 2, 4, 0, '19:09:29', '2020-09-04 17:55:23', NULL, NULL, 1);
@@ -188,7 +188,7 @@ ALTER TABLE `tiposdispositivosiot`
 -- Filtros para la tabla `dispositivosiot`
 --
 ALTER TABLE `dispositivosiot`
-  ADD CONSTRAINT `dispositivosiot_ibfk_2` FOREIGN KEY (`tipodispositivoiot`) REFERENCES `tiposdispositivosiot` (`idtipodispositivoiot`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `dispositivosiot_ibfk_2` FOREIGN KEY (`tipodispositivoIoT`) REFERENCES `tiposdispositivosiot` (`idtipodispositivoiot`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `dispositivosiot_ibfk_3` FOREIGN KEY (`modulo`) REFERENCES `modulos` (`idmodulo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `dispositivosiot_ibfk_4` FOREIGN KEY (`tipodispositivoIoT`) REFERENCES `tiposdispositivosiot` (`idtipodispositivoiot`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 

@@ -31,12 +31,14 @@
 
 	include "validacionestadoactual.php";
 
-	//Traer datos y desiciones.
-	//include "conexion.php";
-	//$query1 = mysqli_query($conexion,"
-	//			SELECT xxxxxxxxx 
-	//			WHERE idmodulo=$mod");
-	//mysqli_close($conexion);
+	include "conexion.php";
+	$query2 = mysqli_query($conexion,"SELECT * FROM modulos WHERE idmodulo=$mod");
+	mysqli_close($conexion);
+	$data=mysqli_fetch_array($query2);
+	$productoshechos=$data['productoshechos'];
+	$unidadesesperadas=$data['unidadesesperadas'];
+	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
+
 ?>
 
 
@@ -54,6 +56,9 @@
 		<br>
 
 		<form method="post" action="">
+			<p>Unidades terminadas: <?php echo $productoshechos ?></p>
+			<p>Unidades programadas: <?php echo $unidadesesperadas; ?></p>
+			<p>Porcentaje completado: <?php echo $porcentajecompletado; ?> %</p>
 			<input type="submit" name="Reiniciar" value="reiniciar"> 
 		</form>	
 		

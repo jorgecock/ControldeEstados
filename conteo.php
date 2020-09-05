@@ -43,12 +43,14 @@
 
 	include "validacionestadoactual.php";
 
-	//Traer datos y desiciones.
-	//include "conexion.php";
-	//$query1 = mysqli_query($conexion,"
-	//			SELECT xxxxxxxxx 
-	//			WHERE idmodulo=$mod");
-	//mysqli_close($conexion);
+	include "conexion.php";
+	$query2 = mysqli_query($conexion,"SELECT * FROM modulos WHERE idmodulo=$mod");
+	mysqli_close($conexion);
+	$data=mysqli_fetch_array($query2);
+	$productoshechos=$data['productoshechos'];
+	$unidadesesperadas=$data['unidadesesperadas'];
+	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
+
 ?>
 
 
@@ -66,15 +68,18 @@
 		<h2>Conteo de producción en el módulo <?php echo $mod; ?>.</h2>
 		<br>
 		<form method="post" action="">
+			<p>Unidades terminadas actualmente: <?php echo $productoshechos; ?></p>
+			<p>Unidades programadas: <?php echo $unidadesesperadas; ?></p>
+			<p>Porcentaje completado: <?php echo $porcentajecompletado; ?> %</p>
 			<input type="submit" name="pausa" value="pausa"> 
 			<input type="submit" name="terminar" value="terminar">
 		</form>	
 
 		<hr size="8px" color="black" />
-		Numero de modulo a seguir.<br>
-		<select id="mySelect" onchange="cambiodemodulo(this.value)">
+		Numero de módulo a seguir.<br>
+
+		<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">
 			<?php
-			//obtener numero de modulos configurados a hacer seguimiento para select 
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"SELECT * FROM modulos");
 			mysqli_close($conexion);
@@ -82,7 +87,7 @@
 			echo $result1;
 			for($i=1;$i<=$result1;$i++){
 			?>	
-			<option value="<?php echo $i; ?>" <?php echo ($i==$mod)? "selected":"";?>><?php echo $i;?></option>
+				<option value="<?php echo $i; ?>" <?php echo ($i==$mod)? "selected":"";?>><?php echo $i;?></option>
 			<?php 
 			}
 			?>

@@ -75,6 +75,7 @@
 
 	  	<hr size="8px" color="black" />
 		Número de módulo a seguir.<br>
+		
 		<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">
 			<?php
 			//obtener numero de modulos configurados a hacer seguimiento para select 
