@@ -64,7 +64,7 @@
 
 	$aceptable=0;
 
-	$mensaje1="En la jornada programada de $minutosprogramados minutos se espera producir $unidadesesperadas unidades de $itemaproducir bajo la orden de producción $ordendeprod.<br><br>El tiempo de ciclo estimado es de $tiempocicloesperado minutos y se requiere un 'Takt Time' de $takt minutos para poder cumplir con los tiempos requeridos. "; 
+	$mensaje1="Jornada programada: $minutosprogramados minutos <br> Cantidad a producir: $unidadesesperadas unidades.<br><hr size='3px' color='black' />El tiempo de ciclo estimado es de $tiempocicloesperado minutos y se requiere un 'Takt Time' de $takt minutos para poder cumplir con los tiempos requeridos."; 
 	if($tiempocicloesperado<=$takt){
 		$mensaje2="Como el tiempo de ciclo es menor o igual que el 'Takt Time' requerido, se puede cumplir con la demanda.<br><br>Cuando vayan a comenzar labores en la línea modulo $mod de producción dar click en Iniciar Conteo.";
 		$aceptable=1;
@@ -80,13 +80,18 @@
 <head>
 	<title>Estado 2 Validación</title>
 </head>
-<body align='center'>
+<body>
 	<div>
-		<h1>Validación</h1>
 		<hr size="8px" color="black" />
-		<h2 align="left">Validación de los datos de la orden de producción a programar en el módulo <?php echo $mod; ?>.</h2>
-		<h3 align="left"><?php echo($mensaje1.$mensaje2) ?></h3>
-		<br>
+		<h1 align='center'>MODULO <?php echo $mod; ?></h1>
+		<hr size="3px" color="black" />
+		<h1>Validación de los datos de la orden de producción a programar en el módulo <?php echo $mod; ?></h1>
+		<hr size="3px" color="black" />
+		<h3>Orden de producción: <?php echo $ordendeprod; ?><br>Item a producir: <?php echo $itemaproducir; ?></h3>
+		<hr size="3px" color="black" />
+		<h3 align="left"><?php echo $mensaje1; ?></h3>
+		<h3 align="left" <?php if($aceptable==0){echo('style="background-color:#F05B64";');} ?>><?php echo $mensaje2; ?></h3>
+		<hr size="3px" color="black" />
 		<form  method="post" action="">			
 			<?php if($aceptable==1){echo('<input type="submit" name="IniCont" value="Iniciar conteo">');} ?>
 			<input type="submit" name="Regresar" value="Regresar">

@@ -26,7 +26,8 @@
 	<div>
 		<hr size="8px" color="black" />
 		<br>
-		<h1>Módulo <?php echo $mod; ?> en espera a ser programado.</h2>
+		<h1>MODULO <?php echo $mod; ?> </h1>
+		<h1>En espera a ser programado.</h1>
 		<br>
 	  	<hr size="8px" color="black" />
 		Número de módulo a seguir.<br>

@@ -66,9 +66,12 @@
 </head>
 <body >
 	<div>
-		<h1>Contando</h1>
+		<hr size="8px" color="black" />
+		<h1 align="center">MODULO <?php echo $mod; ?></h1>
 		<hr size="3px" color="black" />
-		<h3>Conteo de producción en el módulo: <?php echo $mod; ?><br>Orden de producción: <?php echo $ordendeprod; ?><br>Item a producir: <?php echo $itemaproducir; ?></h3>
+		<h1 style='background-color:#F7F561;'>Conteo de producción</h1>
+		<hr size="3px" color="black" />
+		<h3>Orden de producción: <?php echo $ordendeprod; ?><br>Item a producir: <?php echo $itemaproducir; ?></h3>
 		<hr size="3px" color="black" />
 		<h3>Unidades terminadas actualmente: <?php echo $productoshechos; ?><br>
 		Unidades programadas: <?php echo $unidadesesperadas; ?><br>
@@ -100,7 +103,7 @@
 			<input type="submit" name="pausa" value="pausa"> 
 			<input type="submit" name="terminar" value="terminar">
 		</form>	
-		<hr size="3px" color="black" />
+		<hr size="8px" color="black" />
 		Numero de módulo a seguir.<br>
 
 		<select align='center' id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">

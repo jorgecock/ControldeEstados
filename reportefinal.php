@@ -38,7 +38,10 @@
 	$productoshechos=$data['productoshechos'];
 	$unidadesesperadas=$data['unidadesesperadas'];
 	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
-
+	$ordendeprod=$data['ordendeprod'];
+	$itemaproducir=$data['itemaproducir'];
+	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
+	$tiempocicloesperado=$data['tiempocicloesperado'];
 ?>
 
 
@@ -49,16 +52,47 @@
 </head>
 <body>
 	<div>
-		<h1>Reporte final en el módulo controlado por IoT</h1>
 		<hr size="8px" color="black" />
-		
-		<h2>Reporte final de producción e indicadores en el módulo <?php echo $mod; ?>.</h2>
+		<h1 align="center">MODULO <?php echo $mod; ?></h1>
+
+		<hr size="3px" color="black" />
+		<?php 
+			if ($productoshechos < $unidadesesperadas){
+					echo("<h1 style='background-color:#F05B64';>Reporte final de producción e indicadores<br>La producción fue terminada sin hacer todas las unidades esperadas</h1>");
+				} else {
+					echo("<h1 style='background-color:#9AE3B0;'>Reporte final de producción e indicadores<br>Producción terminada completa</h1>");
+				}
+		?>
+		<hr size="3px" color="black" />
+		<h3>Orden de producción: <?php echo $ordendeprod; ?><br>Item a producir: <?php echo $itemaproducir; ?></h3>
+		<hr size="3px" color="black" />
+		<h3>Unidades terminadas actualmente: <?php echo $productoshechos; ?><br>
+		Unidades programadas: <?php echo $unidadesesperadas; ?><br>
+		Porcentaje completado: <?php echo $porcentajecompletado; ?> %</h3>
+		<hr size="3px" color="black" />
+		<h3>Ultimo tiempo de ciclo realizado: 
+
+		<?php 
+			if ($productoshechos > 1){
+				//primer productdo
+				echo round($ultimotiempodeproduccion,2)." minutos"; 
+				$eficienciaultimociclo=($tiempocicloesperado*100/$ultimotiempodeproduccion)." %";
+			}else{
+				//segundo producto en adelante.
+				echo ("No aplica para la primera unidad hecha.");
+				$eficienciaultimociclo=" No aplica para la primera unidad hecha.";
+			}
+		?>
+
 		<br>
+		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos.<br>
+		Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
+
+
+		</h3>
+		<hr size="3px" color="black" />
 
 		<form method="post" action="">
-			<p>Unidades terminadas: <?php echo $productoshechos ?></p>
-			<p>Unidades programadas: <?php echo $unidadesesperadas; ?></p>
-			<p>Porcentaje completado: <?php echo $porcentajecompletado; ?> %</p>
 			<input type="submit" name="Reiniciar" value="reiniciar"> 
 		</form>	
 		

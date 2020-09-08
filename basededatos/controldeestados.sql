@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-09-2020 a las 06:10:05
+-- Tiempo de generación: 08-09-2020 a las 22:08:35
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.5
 
@@ -102,8 +102,8 @@ CREATE TABLE `modulos` (
 --
 
 INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `uptdated_at`, `deleted_at`, `status`) VALUES
-(1, '', '', 1, '2', '33', 10, 2, 20, 2, 1599536145, 1599536454, 1599536441, 0.216667, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1),
-(2, '', '', 1, '', '', 100, 1, 100, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1),
+(1, '', '', 1, '1', '1', 1, 1, 1, 0, 1599585634, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1),
+(2, '', '', 6, '1', '1', 1, 1, 1, 0, 1599584687, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1),
 (3, '', '', 1, '', '', 210, 2, 420, 0, 190931, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1),
 (4, '', '', 1, '', '', 2, 1, 2, 0, 190944, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1),
 (5, '', '', 1, '', '', 1, 10, 10, 0, 190910, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1),
@@ -217,7 +217,16 @@ INSERT INTO `registrotiempos` (`idregistro`, `ordendeprod`, `itemaproducir`, `ho
 (88, 'gfghhf', 'fghfgh', '2020-09-07 22:19:50'),
 (89, 'gfghhf', 'fghfgh', '2020-09-07 22:28:35'),
 (90, '2', '33', '2020-09-07 22:40:41'),
-(91, '2', '33', '2020-09-07 22:40:54');
+(91, '2', '33', '2020-09-07 22:40:54'),
+(92, 'Casas', '254', '2020-09-08 10:07:10'),
+(93, 'Casas', '254', '2020-09-08 10:29:26'),
+(94, 'Casas', '254', '2020-09-08 10:29:34'),
+(95, 'Casas', '254', '2020-09-08 10:29:40'),
+(96, '3456', 'ratones', '2020-09-08 10:48:45'),
+(97, '3456', 'ratones', '2020-09-08 10:48:53'),
+(98, '2222', '21212', '2020-09-08 11:00:58'),
+(99, '2', '2', '2020-09-08 11:02:37'),
+(100, '2', '2', '2020-09-08 11:02:45');
 
 -- --------------------------------------------------------
 
@@ -301,7 +310,7 @@ ALTER TABLE `modulos`
 -- AUTO_INCREMENT de la tabla `registrotiempos`
 --
 ALTER TABLE `registrotiempos`
-  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT de la tabla `tiposdispositivosiot`

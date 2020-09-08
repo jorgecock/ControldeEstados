@@ -52,13 +52,14 @@
 <head>
 	<title>Estado 1 Ingreso de Datos de orden de producción</title>
 </head>
-<body align='center'>	
+<body >	
 	<div>
-		<h1>Datos de orden de producción para el día en el módulo controlado por IoT</h1>
+		<hr size="8px" color="black" />
+		<h1 align='center'>MODULO <?php echo $mod; ?></h1>
 		<hr size="3px" color="black" />
-
-		<h2>Inserte los datos de la orden de producción a programar en el módulo <?php echo $mod; ?>.</h2>
-		<br>
+		<h1>Datos de orden de producción para el día</h1>
+		<hr size="3px" color="black" />
+		<h2>Inserte los datos de la orden de producción a programar en el módulo <?php echo $mod; ?></h2>
 		<form align='left' method="post" action="">
 			<label for="ordendeprod">Orden de producción:  </label>
 			<input type="text" name="ordendeprod">
@@ -79,7 +80,7 @@
 			<h4><?php echo $alert; ?></h4>
 		</form>
 
-	  	<hr size="3px" color="black" />
+	  	<hr size="8px" color="black" />
 		Número de módulo a seguir.<br>
 		
 		<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">

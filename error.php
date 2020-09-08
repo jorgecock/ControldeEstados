@@ -50,6 +50,11 @@
 	$productoshechos=$data['productoshechos'];
 	$unidadesesperadas=$data['unidadesesperadas'];
 	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
+	$ordendeprod=$data['ordendeprod'];
+	$itemaproducir=$data['itemaproducir'];
+	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
+	$tiempocicloesperado=$data['tiempocicloesperado'];
+
 
 ?>
 
@@ -60,16 +65,39 @@
 	<title>Estado 5 error</title>
 </head>
 <body>
-	<div backcolor="red">
-		<h1>Error</h1>
+	<div>
 		<hr size="8px" color="black" />
-		<h2>Producción en el módulo <?php echo $mod; ?> Detenida desde la linea.</h2>
-		<br>
+		<h1 align="center">MODULO <?php echo $mod; ?></h1>
+		<hr size="3px" color="black" />
+		<h1 style='background-color:#F05B64';>PARO. Producción detenida desde la línea.</h1>
+		<hr size="3px" color="black" />
+		<h3>Orden de producción: <?php echo $ordendeprod; ?><br>Item a producir: <?php echo $itemaproducir; ?></h3>
+		<hr size="3px" color="black" />
+		<h3>Unidades terminadas actualmente: <?php echo $productoshechos; ?><br>
+		Unidades programadas: <?php echo $unidadesesperadas; ?><br>
+		Porcentaje completado: <?php echo $porcentajecompletado; ?> %</h3>
+		<hr size="3px" color="black" />
+		<h3>Ultimo tiempo de ciclo realizado: 
 
+		<?php 
+			if ($productoshechos > 1){
+				//primer productdo
+				echo round($ultimotiempodeproduccion,2)." minutos"; 
+				$eficienciaultimociclo=($tiempocicloesperado*100/$ultimotiempodeproduccion)." %";
+			}else{
+				//segundo producto en adelante.
+				echo ("No aplica para la primera unidad hecha.");
+				$eficienciaultimociclo=" No aplica para la primera unidad hecha.";
+			}
+		?>
+		<br>
+		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos.<br>
+		Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
+		</h3>
+		
+
+		<hr size="3px" color="black" />
 		<form method="post" action="">
-			<p>Unidades terminadas actualmente: <?php echo $productoshechos; ?></p>
-			<p>Unidades programadas: <?php echo $unidadesesperadas; ?></p>
-			<p>Porcentaje completado: <?php echo $porcentajecompletado; ?> %</p>
 			<input type="submit" name="reanudar" value="Reanudar Conteo"> 
 			<input type="submit" name="terminar" value="terminar">
 		</form>	
