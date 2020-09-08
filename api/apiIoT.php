@@ -1,5 +1,7 @@
 <?php
 
+include "../functions.php";
+
 $mensaje=array("1");
 if(!empty($_GET)) {
 	if (isset($_GET['iddispositivoiot']) AND isset($_GET['idtipodispositivoiot'])){  
@@ -43,6 +45,22 @@ if(!empty($_GET)) {
 							$productoshechos = $result2['productoshechos'];
 							$nuevosproductoshechos=$productoshechos+1;
 							$unidadesesperadas=$result2['unidadesesperadas'];
+							$tiemporegistroanterior=$result2['tiemporegistro'];
+							$tiemporegistro=strtotime("now");
+							$ordendeprod=$result2['ordendeprod'];
+							$itemaproducir=$result2['itemaproducir'];
+
+
+					
+							//validar si no es el primer producto para descartar los valores en el promedio por ser un tiempo mas largo
+							if ($nuevosproductoshechos <= 1){
+								//primer productdo
+								$ultimotiempodeproduccion=0;
+
+							}else{
+								//segundo producto en adelante.
+								$ultimotiempodeproduccion=($tiemporegistro-$tiemporegistroanterior)/60;
+							}
 
 
 							//validar si termino
@@ -53,24 +71,62 @@ if(!empty($_GET)) {
 							}
 
 							$query3 = mysqli_query($conexion,"
-								UPDATE modulos SET productoshechos=$nuevosproductoshechos, estado=$siguenteestado WHERE idmodulo=$mod");
-							mysqli_close($conexion);
+								UPDATE modulos 
+								SET productoshechos=$nuevosproductoshechos, estado=$siguenteestado, tiemporegistro=$tiemporegistro,   tiemporegistroanterior=$tiemporegistroanterior, ultimotiempodeproduccion = $ultimotiempodeproduccion
+								WHERE idmodulo=$mod");
+
+
+							$query4 = mysqli_query($conexion,"
+								INSERT INTO registrotiempos (ordendeprod, itemaproducir) 
+								VALUES ('$ordendeprod', '$itemaproducir')");
 							
-							if ($query3){
+
+							
+							if ($query3 AND $query4){
+								
 								$mensaje = array("Estado"=>"Ok","Respuesta" =>"pieza hecha +1", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod, "Unidades esperadas"=>$unidadesesperadas, "Productos Hechos"=>$nuevosproductoshechos,"Estado Actual"=>$estadoactual);
 							} else{
+
 								$mensaje = array("Estado"=>"Error","Respuesta" =>"No pudo incrementar en base de datos", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Estado Actual"=>$estadoactual);
 							}
 						}else{
 							$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual);
 						}
+						mysqli_close($conexion);
 
 					}	
 					
 					//Boton de paro de modulo presionado
 					elseif($_GET['boton1']==0 AND $_GET['boton2']==1) { 
 						//Botón de paro de modulo presionado
-						$mensaje = array("Estado"=>"Ok","Respuesta" =>"aro por error  pieza en la linea","idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'], "iddispositivoIoT"=>$_GET['iddispositivoiot']);
+
+
+						//Boton de fin de producto presionado
+						$mod=$data['modulo']; 
+						
+						//incrementar contador parte hecha
+						include "../conexion.php";
+						$query2 = mysqli_query($conexion,"
+							SELECT * FROM modulos WHERE idmodulo=$mod");
+						
+						$result2=mysqli_fetch_array($query2);
+						$estadoactual=$result2['estado'];
+
+						if($estadoactual==3){
+
+							$siguenteestado=5;
+							$query3 = mysqli_query($conexion,"
+								UPDATE modulos 
+								SET estado=$siguenteestado
+								WHERE idmodulo=$mod");
+
+							$mensaje = array("Estado"=>"Ok","Respuesta" =>"Paro por error  pieza en la linea","idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'], "iddispositivoIoT"=>$_GET['iddispositivoiot']);
+
+						}else{
+							$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual);
+						}
+						mysqli_close($conexion);
+
 					} 
 
 					//Sin info de botones acorde al tipo de modulo
@@ -79,6 +135,9 @@ if(!empty($_GET)) {
 						$mensaje = array("Estado"=>"Error","Respuesta" =>"Parametros invalidos para el Dispositivo tipo 1");
 					}
 				} 
+
+
+
 
 				//******dispositivo tipo 2
 				else {

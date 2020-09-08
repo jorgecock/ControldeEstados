@@ -18,11 +18,13 @@
 				
 			$siguienteestado=3; //estado validacion
 			$productoshechos=0; //inicio del conteo 
-			$horadeinicio=date("H:m:s");
+			$momentodeinicio=strtotime("now");
+			
+
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos
-				SET estado=$siguienteestado, productoshechos=$productoshechos, horadeinicio='$horadeinicio'
+				SET estado=$siguienteestado, productoshechos=$productoshechos, momentodeinicio='$momentodeinicio', tiempoacumulado=0, tiempopausado=0
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: conteo.php");
@@ -31,7 +33,6 @@
 		if (isset($_POST['Regresar'])){
 			
 			$siguienteestado=1; //estado entrandoorden
-			
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos 
@@ -47,23 +48,28 @@
 	//Traer datos y desiciones.
 	include "conexion.php";
 	$query1 = mysqli_query($conexion,"
-				SELECT unidadesesperadas, tiempocicloesperado , minutosprogramados
+				SELECT *
 				FROM modulos
 				WHERE idmodulo=$mod");
 	mysqli_close($conexion);
 	$data=mysqli_fetch_array($query1);
+	
+
 	$unidadesesperadas=$data['unidadesesperadas']; 
 	$tiempocicloesperado=$data['tiempocicloesperado']; 
 	$minutosprogramados=$data['minutosprogramados']; 
 	$takt=$minutosprogramados/$unidadesesperadas;
+	$ordendeprod=$data['ordendeprod'];
+	$itemaproducir=$data['itemaproducir'];
+
 	$aceptable=0;
 
-	$mensaje1="<h3 align='center'>En la jornada programada de $minutosprogramados minutos se espera producir $unidadesesperadas unidades.<br>El tiempo de ciclo estimado es de $tiempocicloesperado minutos. <br>Se requiere un Takt Time de $takt minutos.</h3>"; 
+	$mensaje1="En la jornada programada de $minutosprogramados minutos se espera producir $unidadesesperadas unidades de $itemaproducir bajo la orden de producción $ordendeprod.<br><br>El tiempo de ciclo estimado es de $tiempocicloesperado minutos y se requiere un 'Takt Time' de $takt minutos para poder cumplir con los tiempos requeridos. "; 
 	if($tiempocicloesperado<=$takt){
-		$mensaje2="<h3 align='center'>El tiempo de ciclo es adecuado para cumplir con la demanda.<br><br>Si está de acuerdo, dar click en Iniciar Conteo para continuar</h3>";
+		$mensaje2="Como el tiempo de ciclo es menor o igual que el 'Takt Time' requerido, se puede cumplir con la demanda.<br><br>Cuando vayan a comenzar labores en la línea modulo $mod de producción dar click en Iniciar Conteo.";
 		$aceptable=1;
 	} else {
-		$mensaje2="<h3 align='center'>El tiempo de ciclo esperado es mayor que el Takt time requerido por tanto no se puede cumplir con las unidades deseadas.<br>De click en Regresar para reajustar los valores.</h3>";
+		$mensaje2="El tiempo de ciclo esperado es mayor que el 'Takt time' requerido por tanto no se puede cumplir con las unidades deseadas.<br>De click en Regresar para reajustar los valores.";
 		$aceptable=0;
 	}
 ?>
@@ -78,10 +84,10 @@
 	<div>
 		<h1>Validación</h1>
 		<hr size="8px" color="black" />
-		<h2>Validación de los datos de la orden de producción a programar en el módulo <?php echo $mod; ?>.</h2>
-		<?php echo($mensaje1.$mensaje2) ?>
+		<h2 align="left">Validación de los datos de la orden de producción a programar en el módulo <?php echo $mod; ?>.</h2>
+		<h3 align="left"><?php echo($mensaje1.$mensaje2) ?></h3>
 		<br>
-		<form method="post" action="">			
+		<form  method="post" action="">			
 			<?php if($aceptable==1){echo('<input type="submit" name="IniCont" value="Iniciar conteo">');} ?>
 			<input type="submit" name="Regresar" value="Regresar">
 		</form>	

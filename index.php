@@ -14,18 +14,21 @@
 	//Definicion de estado siguiente
 	$alert="";
 	if (!empty($_POST)){
-		if (empty($_POST['unidadesesperadas']) AND empty($_POST['tiempocicloesperado'])  AND empty($_POST['minutosprogramados']) ){
-			$alert="Los campos de Unidades Requeridas, Tiempo de ciclo esperado y Minutos de jornada no pueden estar vacios";
+		if (empty($_POST['unidadesesperadas']) AND empty($_POST['tiempocicloesperado'])  AND empty($_POST['minutosprogramados']) AND empty($_POST['ordendeprod']) AND empty($_POST['itemaproducir']) ){
+			$alert="Se deben llenar todos los campos";
 		} else {
 			$siguienteestado=2; //estado validacion
 			$unidadesesperadas=$_POST['unidadesesperadas'];
 			$tiempocicloesperado=$_POST['tiempocicloesperado'];
 			$minutosprogramados=$_POST['minutosprogramados'];
+			$ordendeprod=$_POST['ordendeprod'];
+			$itemaproducir=$_POST['itemaproducir'];
+
 
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos 
-				SET estado=$siguienteestado, unidadesesperadas=$unidadesesperadas, tiempocicloesperado=$tiempocicloesperado, minutosprogramados=$minutosprogramados
+				SET estado=$siguienteestado, unidadesesperadas=$unidadesesperadas, tiempocicloesperado=$tiempocicloesperado, minutosprogramados=$minutosprogramados, ordendeprod='$ordendeprod', itemaproducir='$itemaproducir', productoshechos=0, momentodeinicio=0, tiempopausado=0, tiempoacumulado=0, tiemporegistro=0, tiemporegistroanterior=0, ultimotiempodeproduccion=0
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: validacion.php");
@@ -52,28 +55,31 @@
 <body align='center'>	
 	<div>
 		<h1>Datos de orden de producción para el día en el módulo controlado por IoT</h1>
-		<hr size="8px" color="black" />
+		<hr size="3px" color="black" />
 
 		<h2>Inserte los datos de la orden de producción a programar en el módulo <?php echo $mod; ?>.</h2>
 		<br>
-		<form method="post" action="">
+		<form align='left' method="post" action="">
+			<label for="ordendeprod">Orden de producción:  </label>
+			<input type="text" name="ordendeprod">
+			<br><br>
+			<label for="itemaproducir">Item a producir:  </label>
+			<input type="text" name="itemaproducir">
+			<br><br>
 			<label for="unidadesesperadas">Unidades requeridas en la jornada a programar:  </label>
 			<input type="number" name="unidadesesperadas">
-			<br>
-			<br>
+			<br><br>
 			<label for="tiempocicloesperado">Tiempo de ciclo en minutos: (Tiempo de ritmo esperado entre prendas entregadas en el punto final)  </label>
 			<input type="number" name="tiempocicloesperado">
-			<br>
-			<br>
+			<br><br>
 			<label for="minutosprogramados">Minutos de jornada programados para producir la referencia:  </label>
 			<input type="number" name="minutosprogramados">
-			<br>
-			<br>
+			<br><br>
 			<input type="submit" name="ProgProd" value="Programar Producción">
 			<h4><?php echo $alert; ?></h4>
 		</form>
 
-	  	<hr size="8px" color="black" />
+	  	<hr size="3px" color="black" />
 		Número de módulo a seguir.<br>
 		
 		<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">
