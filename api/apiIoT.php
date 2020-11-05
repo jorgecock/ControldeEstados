@@ -24,8 +24,12 @@ if(!empty($_GET)) {
 				//corresponden el tipo dispositivo recibido desde el modulo iot corresponde con el registrado en la base de datos
 
 				//***************Dispositivo tipo 1*******
-				if ( $_GET['idtipodispositivoiot']==1 AND isset($_GET['boton1']) AND isset($_GET['boton2']) ){ 
-					//// Modulo Iot solo con botenes para conteo de prendas hechas al final de linea y paro por error
+				//// Modulo Iot solo con botenes para conteo de prendas hechas al final de linea y paro por error, y medicion de voltaje
+
+				if ( $_GET['idtipodispositivoiot']==1 AND isset($_GET['boton1']) AND isset($_GET['boton2']) AND isset($_GET['voltage'])){ 
+					
+					//voltage
+					$voltage=$_GET['voltage'];
 
 					//Boton tarea hecha
 					if($_GET['boton1']==1 AND $_GET['boton2']==0){ 
@@ -44,6 +48,8 @@ if(!empty($_GET)) {
 							
 							$productoshechos = $result2['productoshechos'];
 							$nuevosproductoshechos=$productoshechos+1;
+							$prodhechosdespausaini = $result2['prodhechosdespausaini'];
+							$nuevosprodhechosdespausini=$prodhechosdespausaini+1;
 							$unidadesesperadas=$result2['unidadesesperadas'];
 							$tiemporegistroanterior=$result2['tiemporegistro'];
 							$tiemporegistro=strtotime("now");
@@ -51,10 +57,9 @@ if(!empty($_GET)) {
 							$itemaproducir=$result2['itemaproducir'];
 
 
-					
 							//validar si no es el primer producto para descartar los valores en el promedio por ser un tiempo mas largo
-							if ($nuevosproductoshechos <= 1){
-								//primer productdo
+							if ($nuevosprodhechosdespausini <= 1){
+								//primer producto luego de inicio o de una pausa para no tomar en cuenta en los promedios.
 								$ultimotiempodeproduccion=0;
 
 							}else{
@@ -72,10 +77,10 @@ if(!empty($_GET)) {
 
 							$query3 = mysqli_query($conexion,"
 								UPDATE modulos 
-								SET productoshechos=$nuevosproductoshechos, estado=$siguenteestado, tiemporegistro=$tiemporegistro,   tiemporegistroanterior=$tiemporegistroanterior, ultimotiempodeproduccion = $ultimotiempodeproduccion
+								SET productoshechos=$nuevosproductoshechos, estado=$siguenteestado, tiemporegistro=$tiemporegistro,   tiemporegistroanterior=$tiemporegistroanterior, ultimotiempodeproduccion = $ultimotiempodeproduccion, voltage = $voltage, prodhechosdespausaini=$nuevosprodhechosdespausini
 								WHERE idmodulo=$mod");
 
-
+							//registro del momento de cada elemento a producir en una orden de produccion
 							$query4 = mysqli_query($conexion,"
 								INSERT INTO registrotiempos (ordendeprod, itemaproducir) 
 								VALUES ('$ordendeprod', '$itemaproducir')");
@@ -84,13 +89,13 @@ if(!empty($_GET)) {
 							
 							if ($query3 AND $query4){
 								
-								$mensaje = array("Estado"=>"Ok","Respuesta" =>"pieza hecha +1", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod, "Unidades esperadas"=>$unidadesesperadas, "Productos Hechos"=>$nuevosproductoshechos,"Estado Actual"=>$estadoactual);
+								$mensaje = array("Estado"=>"Ok","Respuesta" =>"pieza hecha +1", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod, "Unidades esperadas"=>$unidadesesperadas, "Productos Hechos"=>$nuevosproductoshechos,"Estado Actual"=>$estadoactual,"Voltage"=>$voltage);
 							} else{
 
-								$mensaje = array("Estado"=>"Error","Respuesta" =>"No pudo incrementar en base de datos", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Estado Actual"=>$estadoactual);
+								$mensaje = array("Estado"=>"Error","Respuesta" =>"No pudo incrementar en base de datos", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Estado Actual"=>$estadoactual,"Voltage"=>$voltage);
 							}
 						}else{
-							$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual);
+							$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual,"Voltage"=>$voltage);
 						}
 						mysqli_close($conexion);
 
@@ -117,17 +122,21 @@ if(!empty($_GET)) {
 							$siguenteestado=5;
 							$query3 = mysqli_query($conexion,"
 								UPDATE modulos 
-								SET estado=$siguenteestado
+								SET estado=$siguenteestado, voltage = $voltage
 								WHERE idmodulo=$mod");
 
-							$mensaje = array("Estado"=>"Ok","Respuesta" =>"Paro por error  pieza en la linea","idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'], "iddispositivoIoT"=>$_GET['iddispositivoiot']);
+							$mensaje = array("Estado"=>"Ok","Respuesta" =>"Paro por error  pieza en la linea","idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'], "iddispositivoIoT"=>$_GET['iddispositivoiot'], "Voltage"=>$voltage);
 
 						}else{
-							$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual);
+							$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual, "Voltage"=>$voltage);
 						}
 						mysqli_close($conexion);
 
 					} 
+
+					
+
+
 
 					//Sin info de botones acorde al tipo de modulo
 					else {

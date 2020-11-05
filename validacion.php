@@ -16,15 +16,16 @@
 		//Selecciona a la pagina del siguiente estado con la funcion de salida para iniciar el estado siguiente
 		if (isset($_POST['IniCont'])){
 				
-			$siguienteestado=3; //estado validacion
+			$siguienteestado=3; //Pasa a estado conteo
 			$productoshechos=0; //inicio del conteo 
+			$prodhechosdespausaini=0; //productos hechos luego de inicio
 			$momentodeinicio=strtotime("now");
 			
 
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos
-				SET estado=$siguienteestado, productoshechos=$productoshechos, momentodeinicio='$momentodeinicio', tiempoacumulado=0, tiempopausado=0
+				SET estado=$siguienteestado, productoshechos=$productoshechos, momentodeinicio='$momentodeinicio', tiempoacumulado=0, tiempopausado=0, prodhechosdespausaini=$prodhechosdespausaini
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: conteo.php");
@@ -32,7 +33,7 @@
 
 		if (isset($_POST['Regresar'])){
 			
-			$siguienteestado=1; //estado entrandoorden
+			$siguienteestado=1; //pasa a estado entrandoorden
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos 

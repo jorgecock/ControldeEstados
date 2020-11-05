@@ -31,7 +31,10 @@
 				SET estado=$siguienteestado, unidadesesperadas=$unidadesesperadas, tiempocicloesperado=$tiempocicloesperado, minutosprogramados=$minutosprogramados, ordendeprod='$ordendeprod', itemaproducir='$itemaproducir', productoshechos=0, momentodeinicio=0, tiempopausado=0, tiempoacumulado=0, tiemporegistro=0, tiemporegistroanterior=0, ultimotiempodeproduccion=0
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
+			
+
 			header("location: validacion.php");
+			
 		}		
 	} 
 
@@ -71,10 +74,10 @@
 			<input type="number" name="unidadesesperadas">
 			<br><br>
 			<label for="tiempocicloesperado">Tiempo de ciclo en minutos: (Tiempo de ritmo esperado entre prendas entregadas en el punto final)  </label>
-			<input type="number" name="tiempocicloesperado">
+			<input type="number" step="any" name="tiempocicloesperado">
 			<br><br>
 			<label for="minutosprogramados">Minutos de jornada programados para producir la referencia:  </label>
-			<input type="number" name="minutosprogramados">
+			<input type="number" step="any" name="minutosprogramados">
 			<br><br>
 			<input type="submit" name="ProgProd" value="Programar Producción">
 			<h4><?php echo $alert; ?></h4>

@@ -59,8 +59,8 @@
 		<?php 
 			if ($productoshechos > 1){
 				//primer productdo
-				echo round($ultimotiempodeproduccion,2)." minutos"; 
-				$eficienciaultimociclo=($tiempocicloesperado*100/$ultimotiempodeproduccion)." %";
+				echo round($ultimotiempodeproduccion,2)." minutos, ".round($ultimotiempodeproduccion*60,2)." segundos"; 
+				$eficienciaultimociclo=round($tiempocicloesperado*100/$ultimotiempodeproduccion,2)." %";
 			}else{
 				//segundo producto en adelante.
 				echo ("No aplica para la primera unidad hecha.");
@@ -69,7 +69,7 @@
 		?>
 
 		<br>
-		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos.<br>
+		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos, <?php echo $tiempocicloesperado*60; ?> segundos.<br>
 		Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
 
 

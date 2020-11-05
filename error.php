@@ -14,6 +14,8 @@
 	//Definicion de estado siguiente
 	if (isset($_POST)){
 		//Selecciona a la pagina del siguiente estado con la funcion de salida para iniciar el estado siguiente
+		$prodhechosdespausaini=0; //productos hechos luego de pausa
+
 		if (isset($_POST['reanudar'])){
 				
 			$siguienteestado=3; //estado continuar conteo
@@ -21,7 +23,7 @@
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos 
-				SET estado=$siguienteestado
+				SET estado=$siguienteestado, prodhechosdespausaini=$prodhechosdespausaini
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: conteo.php");
@@ -34,7 +36,7 @@
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos 
-				SET estado=$siguienteestado
+				SET estado=$siguienteestado, prodhechosdespausaini=$prodhechosdespausaini
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: reportefinal.php");
@@ -54,6 +56,7 @@
 	$itemaproducir=$data['itemaproducir'];
 	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
 	$tiempocicloesperado=$data['tiempocicloesperado'];
+	$prodhechosdespausaini=$data['prodhechosdespausaini'];
 
 
 ?>
@@ -80,18 +83,18 @@
 		<h3>Ultimo tiempo de ciclo realizado: 
 
 		<?php 
-			if ($productoshechos > 1){
+			if ($prodhechosdespausaini > 1){
 				//primer productdo
-				echo round($ultimotiempodeproduccion,2)." minutos"; 
-				$eficienciaultimociclo=($tiempocicloesperado*100/$ultimotiempodeproduccion)." %";
+				echo round($ultimotiempodeproduccion,2)." minutos ".round($ultimotiempodeproduccion*60,2)." segundos"; 
+				$eficienciaultimociclo=round($tiempocicloesperado*100/$ultimotiempodeproduccion,2)." %";
 			}else{
 				//segundo producto en adelante.
-				echo ("No aplica para la primera unidad hecha.");
-				$eficienciaultimociclo=" No aplica para la primera unidad hecha.";
+				echo ("No aplica para la primera unidad hecha despues del inicio de producción o luego de renudar por algún tipo de pausa.");
+				$eficienciaultimociclo=" No aplica para la primera unidad hecha despues del inicio de producción o luego de renudar por algún tipo de pausa.";
 			}
 		?>
 		<br>
-		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos.<br>
+		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos, <?php echo $tiempocicloesperado*60; ?> segundos.<br>
 		Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
 		</h3>
 		

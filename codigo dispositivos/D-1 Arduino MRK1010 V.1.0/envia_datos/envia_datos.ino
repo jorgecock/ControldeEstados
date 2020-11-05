@@ -4,6 +4,12 @@
 #include "arduino_secrets.h" 
 #include "ArduinoJson.h"
 
+#include<ADS1115_WE.h> 
+#include<Wire.h>
+#define I2C_ADDRESS 0x48
+ADS1115_WE adc(I2C_ADDRESS);
+
+
 // VARIABLES
 char ssid[] = SECRET_SSID;  //SSID de la red
 
@@ -14,43 +20,50 @@ char pass[] = SECRET_PASS;  //clave de la red
 int keyIndex = 0;           // your network key Index number (needed only for WEP)
 int status = WL_IDLE_STATUS;//estado conexión
 
-//const char* host = "192.168.43.243"; // host celular para 
+//DIRECCION SERVIDOR
+const char* host = "192.168.1.14"; // localhost desde conec casa 
+//const char* host = "10.171.92.37"; // localhost desde conec casa 
 //const char* host = "127.0.0.1"; //Conexion celular jorge cock??
-const char* host = "jorgecock.byethost5.com"; //Conexion celular jorge cock??
+//const char* host = "jorgecock.byethost5.com"; //Conexion celular jorge cock??
 
 const int httpPort = 80;
 
 
 //Codigo
 
-String url = "http://jorgecock.byethost5.com/ControldeEstados/api/apiIoT.php";
+//String url = "http://jorgecock.byethost5.com/ControldeEstados/api/apiIoT.php";
+String url = "http://localhost/ControldeEstados/api/apiIoT.php";
+
+
 int estadosensor1 =0;
 int estadosensoranterior1=0;
 int estadosensor2 =0;
 int estadosensoranterior2=0;
-int Input1 = 5; //puerto entrada en placa Arduino para Pulsador produccion en Arduino MRK1010
-int Input2 = 4; //puerto entrada en placa Arduino para Paro de emergencia en Arduino MRK1010
-int Output1 = 3; //puerto Salida en placa Arduino para Led pulsado boton en Arduino MRK1010
-int Output2 = 2; //puerto Salida en placa Arduino para Led estado y comunicaciones en Arduino MRK1010
-
+int Input1 = 5; //puerto entrada en placa Arduino MRK1010 para Pulsador produccion 
+int Input2 = 4; //puerto entrada en placa Arduino MRK1010 para Paro de emergencia 
+int Output1 = 3; //puerto Salida en placa Arduino MRK1010 para Led amarillo de pulsado boton verde 
+int Output2 = 2; //puerto Salida en placa Arduino MRK1010 para Led azul     estado y comunicaciones 
+int Output3 = 1; //puerto Salida en placa Arduino MRK1010 para Led rojo     de pulsado boton rojo
+float voltage = 0.0; //salida del ADC
+int contreg=0;
 
 //******************DATOS DEL TIPO DE MODULO Y SERIE******************
-int iddispositivoIoT=2; // NUMERO SERIAL DEL DISPOSITIOV IOT
-int idtipodispositivoIoT=1; // NUMERO SERIAL DEL DISPOSITIOV IOT
+int iddispositivoiot=2; // NUMERO SERIAL DEL DISPOSITIOV IOT
+int idtipodispositivoiot=1; // NUMERO SERIAL DEL DISPOSITIOV IOT
 //***********************************************************************
 
 // CONFIGURACIÓN INICIAL
 void setup() {
-  
-
   //Inicio de puertos
   pinMode(Input1, INPUT_PULLUP);
   pinMode(Input2, INPUT_PULLUP);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(Output1, OUTPUT);
   pinMode(Output2, OUTPUT);
+  pinMode(Output3, OUTPUT);
   digitalWrite(Output1, 1);
   digitalWrite(Output2, 1);
+  digitalWrite(Output3, 1);
   
   //Inicializacion serial
   Serial.begin(115200);
@@ -59,9 +72,29 @@ void setup() {
   //}
   //delay(100);
 
+  //Inicio ADC para medida de corriente
+  Wire.begin();
+  if(!adc.init()){
+    //anuncia que no está conectado el modulo ADC
+    Serial.println("ADS1115 not connected!");
+    for (int i = 0; i <= 10; i++) {
+      digitalWrite(Output2, 0);
+      delay(20);
+      digitalWrite(Output2, 1);
+      delay(20);
+    }
+    delay(1000);
+  }
+  adc.setVoltageRange_mV(ADS1115_RANGE_6144);
+  adc.setCompareChannels(ADS1115_COMP_0_1);
+  adc.setMeasureMode(ADS1115_CONTINUOUS);
+
+
   //Primera Lectura
   estadosensor1 = digitalRead(Input1);
+  digitalWrite(Output1, !estadosensor1);
   estadosensor2 = digitalRead(Input2);
+  digitalWrite(Output3, !estadosensor2);
   Serial.print("Estado sensor1");
   Serial.println(estadosensor1);
   Serial.print("Estado sensor2");
@@ -117,34 +150,42 @@ void setup() {
 }
  
 void loop() {
+  voltage = adc.getResult_V();
   estadosensor1 = digitalRead(Input1);
   digitalWrite(Output1, !estadosensor1);
   estadosensor2 = !digitalRead(Input2); //se niega por ser un boton normalmente cerrado
-
+  digitalWrite(Output3, !estadosensor2);
+  
   if ( ((estadosensor1!=estadosensoranterior1) and estadosensor1==1) or ((estadosensor2!=estadosensoranterior2) and estadosensor2==1) ){
+    contreg=contreg+1;;
+    Serial.print("Conteo: ");
+    Serial.println(contreg);
     Serial.print("Estado sensor1: ");
     Serial.println(estadosensor1);
     Serial.print("Estado sensor2: ");
     Serial.println(estadosensor2);
+    Serial.print("Voltage medido: ");
+    Serial.println(voltage);
     Serial.println("************");
 
+    
     //Concetarse a la base de datos
     WiFiClient client;
     delay(300);
     if (!client.connect(host, httpPort)) {
       Serial.println("Conexion fallada al servidor");
       digitalWrite(Output2, 0);
-      delay(10);
+      delay(30);
       digitalWrite(Output2, 1);
-      delay(10);
+      delay(30);
       digitalWrite(Output2, 0);
-      delay(10);
+      delay(30);
       digitalWrite(Output2, 1);
-      delay(10);
+      delay(30);
       digitalWrite(Output2, 0);
-      delay(10);
+      delay(30);
       digitalWrite(Output2, 1);
-      delay(10);
+      delay(30);
       return;
     }else{
       Serial.println("Conectado a:"+ String(host) +":"+String (httpPort)+" correctamente.");
@@ -152,7 +193,7 @@ void loop() {
     }
 
     //comando para la base de datos a traves de API.
-    String data= "iddispositivoIoT="+String(iddispositivoIoT)+"&idtipodispositivoIoT="+String(idtipodispositivoIoT)+"&boton1="+String(estadosensor1)+"&boton2="+String(estadosensor2);
+    String data= "iddispositivoiot="+String(iddispositivoiot)+"&idtipodispositivoiot="+String(idtipodispositivoiot)+"&boton1="+String(estadosensor1)+"&boton2="+String(estadosensor2)+"&voltage="+String(voltage);
     Serial.println("Solicitando: ");
     
     //envio de comando por monitor serial para visualizar lo enviado y verificar.
