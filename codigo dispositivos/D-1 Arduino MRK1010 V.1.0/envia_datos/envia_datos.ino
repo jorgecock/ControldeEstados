@@ -14,25 +14,25 @@ ADS1115_WE adc(I2C_ADDRESS);
 char ssid[] = SECRET_SSID;  //SSID de la red
 
 
-
-
 char pass[] = SECRET_PASS;  //clave de la red
 int keyIndex = 0;           // your network key Index number (needed only for WEP)
 int status = WL_IDLE_STATUS;//estado conexión
 
-//DIRECCION SERVIDOR
-const char* host = "192.168.1.14"; // localhost desde conec casa 
-//const char* host = "10.171.92.37"; // localhost desde conec casa 
-//const char* host = "127.0.0.1"; //Conexion celular jorge cock??
+//DIRECCION SERVIDOR **********************************************************************************************************
+//const char* host = "192.168.43.167"; //Conexion a portatil conectado a celular jorge cock, verificar con IPCONFIG
+//const char* host = "127.0.0.1"; //Conexion celular jorge cock
 //const char* host = "jorgecock.byethost5.com"; //Conexion celular jorge cock??
+const char* host = "192.168.1.158"; //Servidor Carsil
 
 const int httpPort = 80;
 
 
-//Codigo
+//Codigo***********
 
+//Direccion API****************************************************************************************************************
 //String url = "http://jorgecock.byethost5.com/ControldeEstados/api/apiIoT.php";
-String url = "http://localhost/ControldeEstados/api/apiIoT.php";
+//String url = "http://192.168.1.158/ControldeEstados/api/apiIoT.php";
+String url = "http://localhost/ControldeEstados/api/apiIoT.php"; //carsil
 
 
 int estadosensor1 =0;
@@ -47,10 +47,10 @@ int Output3 = 1; //puerto Salida en placa Arduino MRK1010 para Led rojo     de p
 float voltage = 0.0; //salida del ADC
 int contreg=0;
 
-//******************DATOS DEL TIPO DE MODULO Y SERIE******************
+//******************DATOS DEL TIPO DE MODULO Y SERIE***************************************************************************
 int iddispositivoiot=2; // NUMERO SERIAL DEL DISPOSITIOV IOT
 int idtipodispositivoiot=1; // NUMERO SERIAL DEL DISPOSITIOV IOT
-//***********************************************************************
+//*****************************************************************************************************************************
 
 // CONFIGURACIÓN INICIAL
 void setup() {
