@@ -22,10 +22,13 @@
 	<meta charset="utf-8">
 	<meta http-equiv="refresh" content="5">
 </head>
-<body align='center'>	
+<body align='center' onload="mueveReloj()">	
 	<div>
 		<hr size="8px" color="black" />
-		<br>
+		<form name="form_reloj" align="left">
+			<input type="text" name="reloj" style="font-size : 14pt; text-align : left;" onfocus="window.document.form_reloj.reloj.blur()">
+		</form>
+		<h3 align='left'> Fecha: <?php echo date("d/m/Y"); ?></h3>
 		<h1>MODULO <?php echo $mod; ?> </h1>
 		<h1>En espera a ser programado.</h1>
 		<br>

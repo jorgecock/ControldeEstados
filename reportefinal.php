@@ -51,9 +51,13 @@
 <head>
 	<title>Estado 6 Terminado</title>
 </head>
-<body>
+<body onload="mueveReloj()">
 	<div>
 		<hr size="8px" color="black" />
+		<form name="form_reloj">
+			<input type="text" name="reloj" style="font-size : 14pt; text-align : left;" onfocus="window.document.form_reloj.reloj.blur()">
+		</form>
+		<h3 align='left'> Fecha: <?php echo date("d/m/Y"); ?></h3>
 		<h1 align="center">MODULO <?php echo $mod; ?></h1>
 
 		<hr size="3px" color="black" />

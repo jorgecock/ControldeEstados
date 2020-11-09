@@ -34,9 +34,13 @@
 	<meta charset="utf-8">
 	<meta http-equiv="refresh" content="5">
 </head>
-<body>
+<body onload="mueveReloj()">
 	<div>
 		<hr size="8px" color="black" />
+		<form name="form_reloj">
+			<input type="text" name="reloj" style="font-size : 14pt; text-align : left;" onfocus="window.document.form_reloj.reloj.blur()">
+		</form>
+		<h3 align='left'> Fecha: <?php echo date("d/m/Y"); ?></h3>
 		<h1 align="center">MODULO <?php echo $mod; ?></h1>
 		<hr size="3px" color="black" />
 		<h1 style='background-color:#F7F561;'>Conteo de producción</h1>
@@ -45,7 +49,7 @@
 		<hr size="3px" color="black" />
 		<h3>Unidades terminadas actualmente: <?php echo $productoshechos; ?><br>
 		Unidades programadas: <?php echo $unidadesesperadas; ?><br>
-		Porcentaje completado: <?php echo $porcentajecompletado; ?> %</h3>
+		Porcentaje completado: <?php echo round($porcentajecompletado,2); ?> %</h3>
 		<hr size="3px" color="black" />
 		<h3>Ultimo tiempo de ciclo realizado: 
 

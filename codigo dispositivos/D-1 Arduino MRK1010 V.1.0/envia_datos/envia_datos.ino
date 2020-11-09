@@ -22,7 +22,8 @@ int status = WL_IDLE_STATUS;//estado conexión
 //const char* host = "192.168.43.167"; //Conexion a portatil conectado a celular jorge cock, verificar con IPCONFIG
 //const char* host = "127.0.0.1"; //Conexion celular jorge cock
 //const char* host = "jorgecock.byethost5.com"; //Conexion celular jorge cock??
-const char* host = "192.168.1.158"; //Servidor Carsil
+const char* host = "192.168.1.14"; //Servidor Casa Jorge
+//const char* host = "192.168.1.158"; //Servidor Carsil
 
 const int httpPort = 80;
 
@@ -32,7 +33,7 @@ const int httpPort = 80;
 //Direccion API****************************************************************************************************************
 //String url = "http://jorgecock.byethost5.com/ControldeEstados/api/apiIoT.php";
 //String url = "http://192.168.1.158/ControldeEstados/api/apiIoT.php";
-String url = "http://localhost/ControldeEstados/api/apiIoT.php"; //carsil
+String url = "http://localhost/ControldeEstados/api/apiIoT.php"; //carsil y casa  jorge
 
 
 int estadosensor1 =0;
