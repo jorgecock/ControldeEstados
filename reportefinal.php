@@ -43,6 +43,10 @@
 	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
 	$tiempocicloesperado=$data['tiempocicloesperado'];
 	$prodhechosdespausaini=$data['prodhechosdespausaini'];
+	$eficienciaacumulada=$data['eficienciaacumulada'];
+	$pausashechas=$data['pausashechas'];
+	$tiempopausado=$data['tiempopausado'];
+	$tiempoacumulado=$data['tiempoacumulado'];
 ?>
 
 
@@ -92,9 +96,14 @@
 		<br>
 		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos, <?php echo $tiempocicloesperado*60; ?> segundos.<br>
 		Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
-
-
 		</h3>
+
+
+		<h3>Eficiencia Acumulada: <?php echo round($eficienciaacumulada,2); ?></h3>
+		<h3>Pausas hechas: <?php echo ($pausashechas); ?></h3> 
+		
+		<h3>Tiempo acumulado en pausas en minutos: <?php echo round($tiempopausado/60,2); ?>, en segundos: <?php echo ($tiempopausado); ?></h3>
+		<h3>Tiempo acumulado en trabajo hecho en minutos: <?php echo round($tiempoacumulado/60,2); ?>, en segundos: <?php echo ($tiempoacumulado); ?></h3>
 		<hr size="3px" color="black" />
 
 		<form method="post" action="">

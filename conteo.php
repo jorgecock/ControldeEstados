@@ -11,17 +11,41 @@
 	include "definicionmodulo.php";
 
 
+	include "conexion.php";
+	$query2 = mysqli_query($conexion,"SELECT * FROM modulos WHERE idmodulo=$mod");
+	$data=mysqli_fetch_array($query2);
+	
+	$tiempoacumuladoanterior=$data['tiempoacumulado'];
+	$momentoinidespausa=$data['momentoinidespausa'];
+	$tiempoactual=strtotime("now");
+	$momentodepausa=$tiempoactual;
+	$tiempocicloesperado=$data['tiempocicloesperado'];
+	$productoshechos=$data['productoshechos'];
+	$unidadesesperadas=$data['unidadesesperadas'];
+	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
+	$ordendeprod=$data['ordendeprod'];
+	$itemaproducir=$data['itemaproducir'];
+	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
+	$prodhechosdespausaini=$data['prodhechosdespausaini'];
+	$tiempopasadodesdeultimoreinicio=($tiempoactual-$momentoinidespausa);
+	$nuevotiempoacumuladoanterior=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
+	$tiempoacumtrabajo=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
+	$eficiencia=$productoshechos*100/(($tiempoacumtrabajo/60)/$tiempocicloesperado);
+	$pausashechas=$data['pausashechas'];
+	$tiempopausado=$data['tiempopausado'];
+
 	//Definicion de estado siguiente
+
 	if (isset($_POST)){
 		//Selecciona a la pagina del siguiente estado con la funcion de salida para iniciar el estado siguiente
 		if (isset($_POST['pausa'])){
-				
-			$siguienteestado=4; //pasa a estado pausa
 			
-			include "conexion.php";
+			$siguienteestado=4; //pasa a estado pausa
+			$pausashechas=$pausashechas+1;
+
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos
-				SET estado=$siguienteestado
+				SET estado=$siguienteestado, tiempoacumulado=$nuevotiempoacumuladoanterior, momentodepausa=$momentodepausa, eficienciaacumulada=$eficiencia, pausashechas=$pausashechas
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: pausa.php");
@@ -34,7 +58,7 @@
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos
-				SET estado=$siguienteestado
+				SET estado=$siguienteestado, tiempoacumulado=$nuevotiempoacumuladoanterior, momentodepausa=$momentodepausa, eficienciaacumulada=$eficiencia
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: reportefinal.php");
@@ -47,14 +71,6 @@
 	$query2 = mysqli_query($conexion,"SELECT * FROM modulos WHERE idmodulo=$mod");
 	mysqli_close($conexion);
 	$data=mysqli_fetch_array($query2);
-	$productoshechos=$data['productoshechos'];
-	$unidadesesperadas=$data['unidadesesperadas'];
-	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
-	$ordendeprod=$data['ordendeprod'];
-	$itemaproducir=$data['itemaproducir'];
-	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
-	$tiempocicloesperado=$data['tiempocicloesperado'];
-	$prodhechosdespausaini=$data['prodhechosdespausaini'];
 ?>
 
 
@@ -83,8 +99,8 @@
 		Unidades programadas: <?php echo $unidadesesperadas; ?><br>
 		Porcentaje completado: <?php echo round($porcentajecompletado,2); ?> %</h3>
 		<hr size="3px" color="black" />
+		
 		<h3>Ultimo tiempo de ciclo realizado: 
-
 		<?php 
 			if ($prodhechosdespausaini > 1){
 				//primer producto despues de inicio o de pausa
@@ -96,16 +112,18 @@
 				$eficienciaultimociclo=" No aplica para la primera unidad hecha despues del inicio de producción o luego de renudar por algún tipo de pausa.";
 			}
 		?>
-
 		<br>
 		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos, <?php echo $tiempocicloesperado*60; ?> segundos.<br>
 		Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
-
-
 		</h3>
+		<h3>Eficiencia Acumulada: <?php echo round($eficiencia,2); ?></h3> 
+		<h3>Tiempo Acumulado trabajado total en minutos: <?php echo round($tiempoacumtrabajo/60,2); ?>, en segundos: <?php echo round($tiempoacumtrabajo,2); ?></h3>
+		<h3>Tiempo transcurrido desde la ultima pausa en minutos: <?php echo round($tiempopasadodesdeultimoreinicio/60,2); ?>, en segundos: <?php echo round($tiempopasadodesdeultimoreinicio,2); ?></h3>
+		<h3>Pausas hechas: <?php echo ($pausashechas); ?></h3> 
+		<h3>Tiempo acumulado en pausas en minutos: <?php echo round($tiempopausado/60,2); ?>, en segundos: <?php echo ($tiempopausado); ?></h3>
+
 		<hr size="3px" color="black" />
 		<form method="post" action="">
-			
 			<input type="submit" name="pausa" value="pausa"> 
 			<input type="submit" name="terminar" value="terminar">
 		</form>	

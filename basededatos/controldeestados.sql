@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-11-2020 a las 21:34:53
+-- Tiempo de generación: 09-11-2020 a las 09:23:04
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.8
 
@@ -86,6 +86,8 @@ CREATE TABLE `modulos` (
   `minutosprogramados` float NOT NULL,
   `productoshechos` int(11) NOT NULL DEFAULT 0,
   `momentodeinicio` int(11) NOT NULL,
+  `momentodepausa` int(11) NOT NULL,
+  `momentoinidespausa` int(11) NOT NULL,
   `tiemporegistro` int(11) NOT NULL,
   `tiemporegistroanterior` int(11) NOT NULL,
   `ultimotiempodeproduccion` float NOT NULL,
@@ -96,20 +98,22 @@ CREATE TABLE `modulos` (
   `deleted_at` datetime DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
   `voltage` float NOT NULL,
-  `prodhechosdespausaini` int(11) NOT NULL
+  `prodhechosdespausaini` int(11) NOT NULL,
+  `eficienciaacumulada` float NOT NULL,
+  `pausashechas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `modulos`
 --
 
-INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `uptdated_at`, `deleted_at`, `status`, `voltage`, `prodhechosdespausaini`) VALUES
-(1, '', '', 3, '12345432', 'Camisas Polo', 600, 2.7, 1620, 0, 1604677829, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0),
-(2, '', '', 1, '1', '1', 1, 1, 1, 0, 1599584687, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0),
-(3, '', '', 1, '', '', 210, 2, 420, 0, 190931, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0),
-(4, '', '', 1, '', '', 2, 1, 2, 0, 190944, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0),
-(5, '', '', 1, '', '', 1, 10, 10, 0, 190910, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0),
-(6, '', '', 1, '', '', 2, 2, 4, 0, 190929, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0);
+INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `momentodepausa`, `momentoinidespausa`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `uptdated_at`, `deleted_at`, `status`, `voltage`, `prodhechosdespausaini`, `eficienciaacumulada`, `pausashechas`) VALUES
+(1, '', '', 3, '1234', 'Camisas Polo', 10, 1, 10, 5, 1604909514, 1604909847, 1604909930, 1604909939, 1604909842, 0, 255, 161, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 1, 94.1176, 5),
+(2, '', '', 1, '1', '1', 1, 1, 1, 0, 1599584687, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0),
+(3, '', '', 1, '', '', 210, 2, 420, 0, 190931, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0),
+(4, '', '', 1, '', '', 2, 1, 2, 0, 190944, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0),
+(5, '', '', 1, '', '', 1, 10, 10, 0, 190910, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0),
+(6, '', '', 1, '', '', 2, 2, 4, 0, 190929, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -339,7 +343,100 @@ INSERT INTO `registrotiempos` (`idregistro`, `ordendeprod`, `itemaproducir`, `ho
 (208, '123454321', 'Camisas Polo', '2020-11-06 10:42:28'),
 (209, '123454321', 'Camisas Polo', '2020-11-06 10:31:56'),
 (210, '123454321', 'Camisas Polo', '2020-11-06 10:32:16'),
-(211, '123454321', 'Camisas Polo', '2020-11-06 10:34:14');
+(211, '123454321', 'Camisas Polo', '2020-11-06 10:34:14'),
+(212, '12345432', 'Camisas Polo', '2020-11-07 11:07:04'),
+(213, '12345432', 'Camisas Polo', '2020-11-07 11:07:21'),
+(214, '12345432', 'Camisas Polo', '2020-11-07 11:08:46'),
+(215, '12345432', 'Camisas Polo', '2020-11-08 16:34:41'),
+(216, '12345432', 'Camisas Polo', '2020-11-08 16:41:42'),
+(217, '12345432', 'Camisas Polo', '2020-11-08 16:41:54'),
+(218, '12345432', 'Camisas Polo', '2020-11-08 16:44:01'),
+(219, '12345432', 'Camisas Polo', '2020-11-08 16:44:19'),
+(220, '12345432', 'Camisas Polo', '2020-11-08 16:44:29'),
+(221, '12345432', 'Camisas Polo', '2020-11-08 16:44:37'),
+(222, '1234', 'Camisas Polo', '2020-11-08 20:25:12'),
+(223, '1234', 'Camisas Polo', '2020-11-08 20:25:23'),
+(224, '1234', 'Camisas Polo', '2020-11-08 20:25:32'),
+(225, '1234', 'Camisas Polo', '2020-11-08 20:34:50'),
+(226, '1234', 'Camisas Polo', '2020-11-08 21:06:52'),
+(227, '1234', 'Camisas Polo', '2020-11-08 21:08:53'),
+(228, '1234', 'Camisas Polo', '2020-11-08 21:09:21'),
+(229, '1234', 'Camisas Polo', '2020-11-08 22:15:37'),
+(230, '1234', 'Camisas Polo', '2020-11-08 22:16:09'),
+(231, '1234', 'Camisas Polo', '2020-11-08 22:16:31'),
+(232, '1234', 'Camisas Polo', '2020-11-08 22:20:15'),
+(233, '1234', 'Camisas Polo', '2020-11-08 22:20:45'),
+(234, '1234', 'Camisas Polo', '2020-11-08 22:21:11'),
+(235, '1234', 'Camisas Polo', '2020-11-08 22:21:46'),
+(236, '1234', 'Camisas Polo', '2020-11-08 22:22:15'),
+(237, '1234', 'Camisas Polo', '2020-11-08 22:22:47'),
+(238, '1234', 'Camisas Polo', '2020-11-08 22:23:23'),
+(239, '1234', 'Camisas Polo', '2020-11-08 22:23:45'),
+(240, '1234', 'Camisas Polo', '2020-11-08 22:24:20'),
+(241, '1234', 'Camisas Polo', '2020-11-08 22:24:29'),
+(242, '1234', 'Camisas Polo', '2020-11-08 23:38:10'),
+(243, '1234', 'Camisas Polo', '2020-11-08 23:38:47'),
+(244, '1234', 'Camisas Polo', '2020-11-08 23:38:57'),
+(245, '1234', 'Camisas Polo', '2020-11-08 23:39:06'),
+(246, '1234', 'Camisas Polo', '2020-11-08 23:55:53'),
+(247, '1234', 'Camisas Polo', '2020-11-08 23:56:05'),
+(248, '1234', 'Camisas Polo', '2020-11-09 00:01:15'),
+(249, '1234', 'Camisas Polo', '2020-11-09 00:01:24'),
+(250, '1234', 'Camisas Polo', '2020-11-09 00:01:28'),
+(251, '1234', 'Camisas Polo', '2020-11-09 00:01:33'),
+(252, '1234', 'Camisas Polo', '2020-11-09 00:01:39'),
+(253, '1234', 'Camisas Polo', '2020-11-09 00:01:50'),
+(254, '1234', 'Camisas Polo', '2020-11-09 00:02:00'),
+(255, '1234', 'Camisas Polo', '2020-11-09 00:02:06'),
+(256, '1234', 'Camisas Polo', '2020-11-09 00:07:14'),
+(257, '1234', 'Camisas Polo', '2020-11-09 00:07:32'),
+(258, '1234', 'Camisas Polo', '2020-11-09 00:08:16'),
+(259, '1234', 'Camisas Polo', '2020-11-09 00:08:37'),
+(260, '1234', 'Camisas Polo', '2020-11-09 00:08:42'),
+(261, '1234', 'Camisas Polo', '2020-11-09 00:08:48'),
+(262, '1234', 'Camisas Polo', '2020-11-09 00:08:54'),
+(263, '1234', 'Camisas Polo', '2020-11-09 00:09:06'),
+(264, '1234', 'Camisas Polo', '2020-11-09 00:09:12'),
+(265, '1234', 'Camisas Polo', '2020-11-09 00:09:17'),
+(266, '1234', 'Camisas Polo', '2020-11-09 00:09:23'),
+(267, '1234', 'Camisas Polo', '2020-11-09 00:09:28'),
+(268, '1234', 'Camisas Polo', '2020-11-09 00:09:37'),
+(269, '1234', 'Camisas Polo', '2020-11-09 00:09:43'),
+(270, '1234', 'Camisas Polo', '2020-11-09 00:09:49'),
+(271, '1234', 'Camisas Polo', '2020-11-09 00:09:57'),
+(272, '1234', 'Camisas Polo', '2020-11-09 00:10:08'),
+(273, '1234', 'Camisas Polo', '2020-11-09 00:10:15'),
+(274, '1234', 'Camisas Polo', '2020-11-09 00:10:20'),
+(275, '1234', 'Camisas Polo', '2020-11-09 00:10:34'),
+(276, '1234', 'Camisas Polo', '2020-11-09 00:29:43'),
+(277, '1234', 'Camisas Polo', '2020-11-09 00:29:50'),
+(278, '1234', 'Camisas Polo', '2020-11-09 00:32:41'),
+(279, '1234', 'Camisas Polo', '2020-11-09 01:57:45'),
+(280, '1234', 'Camisas Polo', '2020-11-09 01:58:12'),
+(281, '1234', 'Camisas Polo', '2020-11-09 02:05:52'),
+(282, '1234', 'Camisas Polo', '2020-11-09 02:05:59'),
+(283, '1234', 'Camisas Polo', '2020-11-09 02:06:07'),
+(284, '1234', 'Camisas Polo', '2020-11-09 02:06:26'),
+(285, '1234', 'Camisas Polo', '2020-11-09 02:26:30'),
+(286, '1234', 'Camisas Polo', '2020-11-09 02:26:38'),
+(287, '1234', 'Camisas Polo', '2020-11-09 02:28:10'),
+(288, '1234', 'Camisas Polo', '2020-11-09 02:28:21'),
+(289, '1234', 'Camisas Polo', '2020-11-09 02:29:40'),
+(290, '1234', 'Camisas Polo', '2020-11-09 02:35:15'),
+(291, '1234', 'Camisas Polo', '2020-11-09 02:35:20'),
+(292, '1234', 'Camisas Polo', '2020-11-09 02:35:31'),
+(293, '1234', 'Camisas Polo', '2020-11-09 02:35:38'),
+(294, '1234', 'Camisas Polo', '2020-11-09 02:35:45'),
+(295, '1234', 'Camisas Polo', '2020-11-09 02:35:54'),
+(296, '1234', 'Camisas Polo', '2020-11-09 02:36:04'),
+(297, '1234', 'Camisas Polo', '2020-11-09 02:36:14'),
+(298, '1234', 'Camisas Polo', '2020-11-09 02:36:22'),
+(299, '1234', '1111', '2020-11-09 03:00:36'),
+(300, '1234', 'Camisas Polo', '2020-11-09 03:15:37'),
+(301, '1234', 'Camisas Polo', '2020-11-09 03:15:48'),
+(302, '1234', 'Camisas Polo', '2020-11-09 03:16:06'),
+(303, '1234', 'Camisas Polo', '2020-11-09 03:17:22'),
+(304, '1234', 'Camisas Polo', '2020-11-09 03:18:59');
 
 -- --------------------------------------------------------
 
@@ -423,7 +520,7 @@ ALTER TABLE `modulos`
 -- AUTO_INCREMENT de la tabla `registrotiempos`
 --
 ALTER TABLE `registrotiempos`
-  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
+  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=305;
 
 --
 -- AUTO_INCREMENT de la tabla `tiposdispositivosiot`

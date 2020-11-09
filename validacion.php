@@ -20,12 +20,15 @@
 			$productoshechos=0; //inicio del conteo 
 			$prodhechosdespausaini=0; //productos hechos luego de inicio
 			$momentodeinicio=strtotime("now");
-			
+			$momentoinidespausa=strtotime("now");
+			$tiempoacumulado=0;
+			$tiempopausado=0;
+			$pausashechas=0;
 
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos
-				SET estado=$siguienteestado, productoshechos=$productoshechos, momentodeinicio='$momentodeinicio', tiempoacumulado=0, tiempopausado=0, prodhechosdespausaini=$prodhechosdespausaini
+				SET estado=$siguienteestado, productoshechos=$productoshechos, momentodeinicio=$momentodeinicio, tiempoacumulado=0, tiempopausado=0, prodhechosdespausaini=$prodhechosdespausaini, momentoinidespausa= $momentoinidespausa, pausashechas=0
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: conteo.php");

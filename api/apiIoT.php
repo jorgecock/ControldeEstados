@@ -48,6 +48,7 @@ if(!empty($_GET)) {
 							
 							$productoshechos = $result2['productoshechos'];
 							$nuevosproductoshechos=$productoshechos+1;
+							
 							$prodhechosdespausaini = $result2['prodhechosdespausaini'];
 							$nuevosprodhechosdespausini=$prodhechosdespausaini+1;
 							$unidadesesperadas=$result2['unidadesesperadas'];
@@ -57,7 +58,7 @@ if(!empty($_GET)) {
 							$itemaproducir=$result2['itemaproducir'];
 
 
-							//validar si no es el primer producto para descartar los valores en el promedio por ser un tiempo mas largo
+							//validar si no es el primer producto luego de inicio o pausa para descartar los valores en el promedio por ser un tiempo mas largo
 							if ($nuevosprodhechosdespausini <= 1){
 								//primer producto luego de inicio o de una pausa para no tomar en cuenta en los promedios.
 								$ultimotiempodeproduccion=0;
@@ -116,13 +117,35 @@ if(!empty($_GET)) {
 						
 						$result2=mysqli_fetch_array($query2);
 						$estadoactual=$result2['estado'];
+						$pausashechas=$result2['pausashechas'];
+
 
 						if($estadoactual==3){
 
 							$siguenteestado=5;
+							$pausashechas=$pausashechas+1;
+							$tiempoacumuladoanterior=$result2['tiempoacumulado'];
+							$momentoinidespausa=$result2['momentoinidespausa'];
+							$tiempoactual=strtotime("now");
+							$momentodepausa=$tiempoactual;
+							$tiempocicloesperado=$result2['tiempocicloesperado'];
+							$productoshechos=$result2['productoshechos'];
+							$unidadesesperadas=$result2['unidadesesperadas'];
+							$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
+							$ordendeprod=$result2['ordendeprod'];
+							$itemaproducir=$result2['itemaproducir'];
+							$ultimotiempodeproduccion=$result2['ultimotiempodeproduccion'];
+							$prodhechosdespausaini=$result2['prodhechosdespausaini'];
+							$tiempopasadodesdeultimoreinicio=($tiempoactual-$momentoinidespausa);
+							$nuevotiempoacumuladoanterior=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
+							$tiempoacumtrabajo=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
+							$eficiencia=$productoshechos*100/(($tiempoacumtrabajo/60)/$tiempocicloesperado);
+							
+
+
 							$query3 = mysqli_query($conexion,"
 								UPDATE modulos 
-								SET estado=$siguenteestado, voltage = $voltage
+								SET estado=$siguenteestado, voltage = $voltage, pausashechas=$pausashechas, tiempoacumulado=$nuevotiempoacumuladoanterior, momentodepausa=$momentodepausa, eficienciaacumulada=$eficiencia
 								WHERE idmodulo=$mod");
 
 							$mensaje = array("Estado"=>"Ok","Respuesta" =>"Paro por error  pieza en la linea","idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'], "iddispositivoIoT"=>$_GET['iddispositivoiot'], "Voltage"=>$voltage);
