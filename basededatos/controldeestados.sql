@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-11-2020 a las 09:23:04
+-- Tiempo de generación: 18-11-2020 a las 16:32:12
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.8
 
@@ -42,8 +42,10 @@ CREATE TABLE `dispositivosiot` (
 --
 
 INSERT INTO `dispositivosiot` (`iddispositivoIoT`, `modulo`, `tipodispositivoIoT`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
-(1, 2, 2, '2020-09-04 19:26:15', NULL, NULL, 1),
-(2, 1, 1, '2020-09-04 19:25:30', NULL, NULL, 1);
+(1, 1, 1, '2020-09-04 19:26:15', NULL, NULL, 1),
+(2, 2, 1, '2020-09-04 19:25:30', NULL, NULL, 1),
+(3, 3, 1, '2020-11-17 22:34:22', NULL, NULL, 1),
+(4, 4, 1, '2020-11-17 22:34:22', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -100,20 +102,46 @@ CREATE TABLE `modulos` (
   `voltage` float NOT NULL,
   `prodhechosdespausaini` int(11) NOT NULL,
   `eficienciaacumulada` float NOT NULL,
-  `pausashechas` int(11) NOT NULL
+  `pausashechas` int(11) NOT NULL,
+  `tiempoacumtrabajo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `modulos`
 --
 
-INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `momentodepausa`, `momentoinidespausa`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `uptdated_at`, `deleted_at`, `status`, `voltage`, `prodhechosdespausaini`, `eficienciaacumulada`, `pausashechas`) VALUES
-(1, '', '', 3, '1234', 'Camisas Polo', 10, 1, 10, 5, 1604909514, 1604909847, 1604909930, 1604909939, 1604909842, 0, 255, 161, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 1, 94.1176, 5),
-(2, '', '', 1, '1', '1', 1, 1, 1, 0, 1599584687, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0),
-(3, '', '', 1, '', '', 210, 2, 420, 0, 190931, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0),
-(4, '', '', 1, '', '', 2, 1, 2, 0, 190944, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0),
-(5, '', '', 1, '', '', 1, 10, 10, 0, 190910, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0),
-(6, '', '', 1, '', '', 2, 2, 4, 0, 190929, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0);
+INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `momentodepausa`, `momentoinidespausa`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `uptdated_at`, `deleted_at`, `status`, `voltage`, `prodhechosdespausaini`, `eficienciaacumulada`, `pausashechas`, `tiempoacumtrabajo`) VALUES
+(1, '', '', 3, '1', '1', 12, 1, 12, 1, 1605671524, 1605670675, 1605671524, 1605671612, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 1, 1.62075, 0, 0),
+(2, '', '', 3, '2', '2', 12, 1, 12, 3, 1605671529, 0, 1605671529, 1605671834, 1605671729, 1.75, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 3, 0, 0, 0),
+(3, '', '', 3, '3', '3', 12, 1, 12, 1, 1605671535, 1605671663, 1605671669, 1605671658, 0, 0, 119, 15, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 50.4202, 2, 119),
+(4, '', '', 3, '4', '4', 12, 1, 12, 2, 1605671549, 0, 1605671549, 1605671627, 1605671568, 0.983333, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 2, 0, 0, 0),
+(5, '', '', 1, '', '', 1, 10, 10, 0, 190910, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0, 0),
+(6, '', '', 1, '', '', 2, 2, 4, 0, 190929, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `registroeficiencias`
+--
+
+CREATE TABLE `registroeficiencias` (
+  `id` int(11) NOT NULL,
+  `ordendeprod` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  `itemaproducir` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `cantidadhecha` int(11) NOT NULL,
+  `eficiencia` float NOT NULL,
+  `fechahora` datetime NOT NULL DEFAULT current_timestamp(),
+  `modulo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `registroeficiencias`
+--
+
+INSERT INTO `registroeficiencias` (`id`, `ordendeprod`, `itemaproducir`, `cantidadhecha`, `eficiencia`, `fechahora`, `modulo`) VALUES
+(1, '123', 'polo', 0, 50, '2020-11-15 21:29:14', 2),
+(2, '123', 'polo', 0, 60, '2020-11-15 21:30:07', 2),
+(3, '1', 'casa', 0, 50, '2020-11-16 03:49:24', 1);
 
 -- --------------------------------------------------------
 
@@ -436,7 +464,40 @@ INSERT INTO `registrotiempos` (`idregistro`, `ordendeprod`, `itemaproducir`, `ho
 (301, '1234', 'Camisas Polo', '2020-11-09 03:15:48'),
 (302, '1234', 'Camisas Polo', '2020-11-09 03:16:06'),
 (303, '1234', 'Camisas Polo', '2020-11-09 03:17:22'),
-(304, '1234', 'Camisas Polo', '2020-11-09 03:18:59');
+(304, '1234', 'Camisas Polo', '2020-11-09 03:18:59'),
+(305, '1234', 'Camisas Polo', '2020-11-09 03:33:30'),
+(306, '1234', 'Camisas Polo', '2020-11-09 03:33:53'),
+(307, '1234', 'Camisas Polo', '2020-11-09 03:34:01'),
+(308, '1234', 'Camisas Polo', '2020-11-09 03:34:07'),
+(309, '1234', 'Camisas Polo', '2020-11-09 03:34:14'),
+(310, '10', '10', '2020-11-17 01:31:50'),
+(311, '10', '10', '2020-11-17 01:32:00'),
+(312, '10', '10', '2020-11-17 01:32:06'),
+(313, '10', '10', '2020-11-17 01:32:21'),
+(314, '10', '10', '2020-11-17 01:32:30'),
+(315, '10', '10', '2020-11-17 01:32:41'),
+(316, '10', '10', '2020-11-17 01:32:47'),
+(317, '10', '10', '2020-11-17 01:32:53'),
+(318, '10', '10', '2020-11-17 01:33:11'),
+(319, '10', '10', '2020-11-17 01:33:18'),
+(320, '10', '10', '2020-11-17 01:33:28'),
+(321, '10', '10', '2020-11-17 01:33:39'),
+(322, '1234', 'Camisas Polo', '2020-11-17 13:22:34'),
+(323, '1234', 'Camisas Polo', '2020-11-17 13:22:39'),
+(324, '1234', 'Camisas Polo', '2020-11-17 13:22:44'),
+(325, '1234', 'Camisas Polo', '2020-11-17 13:22:50'),
+(326, '1234', 'Camisas Polo', '2020-11-17 13:22:58'),
+(327, '1234', 'Camisas Polo', '2020-11-17 13:23:19'),
+(328, '1234', 'Camisas Polo', '2020-11-17 13:23:30'),
+(329, '1234', 'Camisas Polo', '2020-11-17 13:23:37'),
+(330, '1234', 'Camisas Polo', '2020-11-17 22:37:50'),
+(331, '4', '4', '2020-11-17 22:52:48'),
+(332, '1', '1', '2020-11-17 22:53:32'),
+(333, '4', '4', '2020-11-17 22:53:47'),
+(334, '3', '3', '2020-11-17 22:54:18'),
+(335, '2', '2', '2020-11-17 22:55:20'),
+(336, '2', '2', '2020-11-17 22:55:29'),
+(337, '2', '2', '2020-11-17 22:57:14');
 
 -- --------------------------------------------------------
 
@@ -489,6 +550,12 @@ ALTER TABLE `modulos`
   ADD KEY `idestado` (`estado`);
 
 --
+-- Indices de la tabla `registroeficiencias`
+--
+ALTER TABLE `registroeficiencias`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `registrotiempos`
 --
 ALTER TABLE `registrotiempos`
@@ -517,10 +584,16 @@ ALTER TABLE `modulos`
   MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT de la tabla `registroeficiencias`
+--
+ALTER TABLE `registroeficiencias`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `registrotiempos`
 --
 ALTER TABLE `registrotiempos`
-  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=305;
+  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=338;
 
 --
 -- AUTO_INCREMENT de la tabla `tiposdispositivosiot`

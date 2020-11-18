@@ -123,6 +123,7 @@ if(!empty($_GET)) {
 						if($estadoactual==3){
 
 							$siguenteestado=5;
+							$tiempoacumtrabajoant=$result2['tiempoacumtrabajo'];
 							$pausashechas=$pausashechas+1;
 							$tiempoacumuladoanterior=$result2['tiempoacumulado'];
 							$momentoinidespausa=$result2['momentoinidespausa'];
@@ -140,13 +141,21 @@ if(!empty($_GET)) {
 							$nuevotiempoacumuladoanterior=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
 							$tiempoacumtrabajo=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
 							$eficiencia=$productoshechos*100/(($tiempoacumtrabajo/60)/$tiempocicloesperado);
+
+							$cambiotiempo=intval(round($tiempoacumtrabajo/180))-intval(round($tiempoacumtrabajoant/180)); 
+							//cada hora se debe cacer un registro
 							
+							if ($cambiotiempo>1){
+							$query4 = mysqli_query($conexion,"
+								INSERT INTO registroeficiencias (id, ordendeprod, itemaproducir, cantidadhecha, eficiencia, fechahora, modulo) VALUES (NULL, '$ordendeprod', '$itemaproducir', $nuevosproductoshechos ,'$eficiencia', current_timestamp(), '$mod')");
+							}
 
 
 							$query3 = mysqli_query($conexion,"
 								UPDATE modulos 
-								SET estado=$siguenteestado, voltage = $voltage, pausashechas=$pausashechas, tiempoacumulado=$nuevotiempoacumuladoanterior, momentodepausa=$momentodepausa, eficienciaacumulada=$eficiencia
+								SET tiempoacumtrabajo=$tiempoacumtrabajo ,estado=$siguenteestado, voltage = $voltage, pausashechas=$pausashechas, tiempoacumulado=$nuevotiempoacumuladoanterior, momentodepausa=$momentodepausa, eficienciaacumulada=$eficiencia
 								WHERE idmodulo=$mod");
+
 
 							$mensaje = array("Estado"=>"Ok","Respuesta" =>"Paro por error  pieza en la linea","idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'], "iddispositivoIoT"=>$_GET['iddispositivoiot'], "Voltage"=>$voltage);
 
@@ -156,10 +165,6 @@ if(!empty($_GET)) {
 						mysqli_close($conexion);
 
 					} 
-
-					
-
-
 
 					//Sin info de botones acorde al tipo de modulo
 					else {

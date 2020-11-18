@@ -24,11 +24,12 @@
 			$tiempoacumulado=0;
 			$tiempopausado=0;
 			$pausashechas=0;
+			$tiempoacumtrabajo=0;
 
 			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos
-				SET estado=$siguienteestado, productoshechos=$productoshechos, momentodeinicio=$momentodeinicio, tiempoacumulado=0, tiempopausado=0, prodhechosdespausaini=$prodhechosdespausaini, momentoinidespausa= $momentoinidespausa, pausashechas=0
+				SET estado=$siguienteestado, productoshechos=$productoshechos, momentodeinicio=$momentodeinicio, tiempoacumulado=0, tiempopausado=0, prodhechosdespausaini=$prodhechosdespausaini, momentoinidespausa= $momentoinidespausa, pausashechas=0, tiempoacumtrabajo=0
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			header("location: conteo.php");
