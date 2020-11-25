@@ -7,12 +7,12 @@
 //#define SECRET_PASS "jorgecock"
 
 //Casa Jorge
-#define SECRET_SSID "FamCockGut"
-#define SECRET_PASS "13a18u3n0Un12"
+//#define SECRET_SSID "FamCockGut"
+//#define SECRET_PASS "13a18u3n0Un12"
 
 //Sena Funcionario
-//#define SECRET_SSID "FUNCIONARIO"
-//#define SECRET_PASS "Nduthr29*Ecali20%Mbog16="
+#define SECRET_SSID "FUNCIONARIO"
+#define SECRET_PASS "Nduthr29*Ecali20%Mbog16="
 
 //CARSIL
 //#define SECRET_SSID "CARSIL_SAS"

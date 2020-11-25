@@ -50,7 +50,7 @@ float voltage = 0.0; //salida del ADC
 int contreg=0;
 
 //******************DATOS DEL TIPO DE MODULO Y SERIE***************************************************************************
-int iddispositivoiot=3; // NUMERO SERIAL DEL DISPOSITIOV IOT
+int iddispositivoiot=4; // NUMERO SERIAL DEL DISPOSITIOV IOT
 int idtipodispositivoiot=1; // NUMERO SERIAL DEL DISPOSITIOV IOT
 //*****************************************************************************************************************************
 

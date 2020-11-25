@@ -5,13 +5,13 @@ include "../functions.php";
 $mensaje=array("1");
 if(!empty($_GET)) {
 	if (isset($_GET['iddispositivoiot']) AND isset($_GET['idtipodispositivoiot'])){  
+		
 		//Datos GET recibidos
 		$iddispositivoIoTrecibido=$_GET['iddispositivoiot'];
 		$idtipodispositivoIoTrecibido=$_GET['idtipodispositivoiot'];
 		include "../conexion.php";
 		$query1 = mysqli_query($conexion,"
 				SELECT * FROM dispositivosiot WHERE iddispositivoIoT=   $iddispositivoIoTrecibido");
-		mysqli_close($conexion);
 		$result=mysqli_num_rows($query1);
 		
 		//Verifica si Hay registros de dispositivo del iddispositivoIoT
@@ -29,20 +29,26 @@ if(!empty($_GET)) {
 				if ( $_GET['idtipodispositivoiot']==1 AND isset($_GET['boton1']) AND isset($_GET['boton2']) AND isset($_GET['voltage'])){ 
 					
 					//voltage
-					$voltage=$_GET['voltage'];
+					$voltage=$_GET['voltage']; //voltaje medido en dispositivo
+					$mod=$data['modulo']; //modulo en el que está registrado el dispositivo.
 
-					//Boton tarea hecha
-					if($_GET['boton1']==1 AND $_GET['boton2']==0){ 
-						//Boton de fin de producto presionado
-						$mod=$data['modulo']; 
+					include "../conexion.php";
+					$query2 = mysqli_query($conexion," SELECT * FROM modulos WHERE idmodulo=$mod");
+					$result2=mysqli_fetch_array($query2);
+					$estadoactual=$result2['estado'];
+
+
+
+
+
+					
+					if($_GET['boton1']==1 AND $_GET['boton2']==0     ){ 
+						//Boton tarea hecha presionado
+						//fin de producto 
+						 
 						
-
 						//incrementar contador parte hecha
-						include "../conexion.php";
-						$query2 = mysqli_query($conexion,"
-							SELECT * FROM modulos WHERE idmodulo=$mod");
-						$result2=mysqli_fetch_array($query2);
-						$estadoactual=$result2['estado'];
+						
 
 						if($estadoactual==3){
 							
@@ -98,25 +104,25 @@ if(!empty($_GET)) {
 						}else{
 							$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual,"Voltage"=>$voltage);
 						}
-						mysqli_close($conexion);
-
 					}	
 					
-					//Boton de paro de modulo presionado
+
+
+
+
+
+
+
+
+
+					
 					elseif($_GET['boton1']==0 AND $_GET['boton2']==1) { 
-						//Botón de paro de modulo presionado
+						//Boton de paro de modulo presionado
 
 
-						//Boton de fin de producto presionado
-						$mod=$data['modulo']; 
 						
 						//incrementar contador parte hecha
-						include "../conexion.php";
-						$query2 = mysqli_query($conexion,"
-							SELECT * FROM modulos WHERE idmodulo=$mod");
 						
-						$result2=mysqli_fetch_array($query2);
-						$estadoactual=$result2['estado'];
 						$pausashechas=$result2['pausashechas'];
 
 
@@ -162,9 +168,18 @@ if(!empty($_GET)) {
 						}else{
 							$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual, "Voltage"=>$voltage);
 						}
-						mysqli_close($conexion);
-
+					
+	
 					} 
+					
+
+
+
+
+
+
+
+
 
 					//Sin info de botones acorde al tipo de modulo
 					else {
@@ -175,10 +190,11 @@ if(!empty($_GET)) {
 
 
 
-
 				//******dispositivo tipo 2
 				else {
-					//******dispositivo tipo 2 
+					//if ( $_GET['idtipodispositivoiot']==N AND (Parametros esperados)
+					//******dispositivo tipo 2, 3 u otro tipo de dispositivo
+					//cuando se diseñe un dispositivo 2 aqui se pondrá el código que debe invocar. 
 					$mensaje = array("Estado"=>"Ok","Respuesta" =>"Dispositivo tipo 2");
 				}
 
@@ -190,7 +206,9 @@ if(!empty($_GET)) {
 		} else {
 			$mensaje = array("Estado"=>"Error","Respuesta"=>"No encontro registro del dispositivo $iddispositivoIoTrecibido ");
 		} 
-			
+		
+		mysqli_close($conexion);
+
 	} else {
 		$mensaje = array("Estado"=>"Error","Respuesta "=>"Faltan parametros");
 	}

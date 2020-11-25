@@ -22,9 +22,9 @@ int status = WL_IDLE_STATUS;//estado conexión
 //const char* host = "192.168.43.167"; //Conexion a portatil conectado a celular jorge cock, verificar con IPCONFIG
 //const char* host = "127.0.0.1"; //Conexion celular jorge cock
 //const char* host = "jorgecock.byethost5.com"; //Conexion celular jorge cock??
-const char* host = "192.168.1.15"; //Servidor Casa Jorge
+//const char* host = "192.168.1.15"; //Servidor Casa Jorge
 //const char* host = "192.168.1.158"; //Servidor Carsil
-//const char* host = "10.171.92.68"; //Servidor pcKarolina
+const char* host = "10.171.92.68"; //Servidor pcKarolina
 
 const int httpPort = 80;
 
