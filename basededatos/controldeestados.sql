@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-11-2020 a las 16:32:12
+-- Tiempo de generación: 26-11-2020 a las 01:06:31
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.8
 
@@ -112,9 +112,9 @@ CREATE TABLE `modulos` (
 
 INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `momentodepausa`, `momentoinidespausa`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `uptdated_at`, `deleted_at`, `status`, `voltage`, `prodhechosdespausaini`, `eficienciaacumulada`, `pausashechas`, `tiempoacumtrabajo`) VALUES
 (1, '', '', 3, '1', '1', 12, 1, 12, 1, 1605671524, 1605670675, 1605671524, 1605671612, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 1, 1.62075, 0, 0),
-(2, '', '', 3, '2', '2', 12, 1, 12, 3, 1605671529, 0, 1605671529, 1605671834, 1605671729, 1.75, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 3, 0, 0, 0),
+(2, '', '', 6, '2', '2', 12, 1, 12, 3, 1605671529, 1605713711, 1605671529, 1605671834, 1605671729, 1.75, 42182, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 3, 0.426722, 0, 0),
 (3, '', '', 3, '3', '3', 12, 1, 12, 1, 1605671535, 1605671663, 1605671669, 1605671658, 0, 0, 119, 15, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 50.4202, 2, 119),
-(4, '', '', 3, '4', '4', 12, 1, 12, 2, 1605671549, 0, 1605671549, 1605671627, 1605671568, 0.983333, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 2, 0, 0, 0),
+(4, '', '', 3, '1', '1', 10, 1, 10, 0, 1606189656, 1606188187, 1606189656, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0.104527, 0, 0),
 (5, '', '', 1, '', '', 1, 10, 10, 0, 190910, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0, 0),
 (6, '', '', 1, '', '', 2, 2, 4, 0, 190929, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0, 0);
 
@@ -497,7 +497,14 @@ INSERT INTO `registrotiempos` (`idregistro`, `ordendeprod`, `itemaproducir`, `ho
 (334, '3', '3', '2020-11-17 22:54:18'),
 (335, '2', '2', '2020-11-17 22:55:20'),
 (336, '2', '2', '2020-11-17 22:55:29'),
-(337, '2', '2', '2020-11-17 22:57:14');
+(337, '2', '2', '2020-11-17 22:57:14'),
+(338, '4', '4', '2020-11-23 22:34:40'),
+(339, '4', '4', '2020-11-23 22:34:55'),
+(340, '4', '4', '2020-11-23 22:35:01'),
+(341, '4', '4', '2020-11-23 22:35:07'),
+(342, '4', '4', '2020-11-23 22:35:37'),
+(343, '4', '4', '2020-11-23 22:36:08'),
+(344, '4', '4', '2020-11-23 22:36:16');
 
 -- --------------------------------------------------------
 
@@ -593,7 +600,7 @@ ALTER TABLE `registroeficiencias`
 -- AUTO_INCREMENT de la tabla `registrotiempos`
 --
 ALTER TABLE `registrotiempos`
-  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=338;
+  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=345;
 
 --
 -- AUTO_INCREMENT de la tabla `tiposdispositivosiot`
